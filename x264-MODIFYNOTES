@@ -1,0 +1,8 @@
+1. CHANGE SO NAME
+
+go to x264 folder and open configuare
+
+
+find out SONAME VAR and update
+
+.$API
