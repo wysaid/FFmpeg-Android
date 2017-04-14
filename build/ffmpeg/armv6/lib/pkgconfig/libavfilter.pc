@@ -5,10 +5,10 @@ includedir=${prefix}/include
 
 Name: libavfilter
 Description: FFmpeg audio/video filtering library
-Version: 3.90.100
-Requires: libavutil = 52.48.101
+Version: 6.65.100
+Requires: libavutil >= 55.34.101
 Requires.private: 
 Conflicts:
-Libs: -L${libdir} -lavfilter -lx264 -lm -lz
+Libs: -L${libdir}  -lavfilter -lx264 -lm -lz -pthread
 Libs.private: 
 Cflags: -I${includedir}
