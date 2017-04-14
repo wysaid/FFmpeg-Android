@@ -1,11 +1,16 @@
+#!/bin/bash
+
 DEST=`pwd`/build && rm -rf $DEST
 FFMPEGDEST="$DEST/ffmpeg"
 X264DEST="$DEST/x264"
 FFMPEGSOURCE=`pwd`/ffmpeg
 X264SOURCE=`pwd`/x264
-TOOLCHAIN=/tmp/vplayer
+TOOLCHAIN=`pwd`/tmp/vplayer
 SYSROOT=$TOOLCHAIN/sysroot/
-export PATH=$TOOLCHAIN/bin:$PATH
+export PATH=$TOOLCHAIN/bin/:$PATH/
+SONAME=libffmpeg.so
+
+# export ANDROID_NDK=/Users/luoye/Library/Android/sdk/ndk-bundle
 
 if [ -z $ANDROID_NDK ]; then
   ANDROID_NDK=$NDK
@@ -50,12 +55,12 @@ checkout_x264() {
 }
 
 prepare_ndk() {
-  $ANDROID_NDK/build/tools/make-standalone-toolchain.sh --arch=$ARCH --platform=android-14 --install-dir=$TOOLCHAIN
+  $ANDROID_NDK/build/tools/make-standalone-toolchain.sh --force --arch=$ARCH --platform=android-14 --install-dir=$TOOLCHAIN
 }
 
 setup_version() {
   local VERSION=$1
-  local X264BUILD="$X264DEST/$VERSION"
+  export X264BUILD="$X264DEST/$VERSION"
   export FFMPEG_FLAGS=""
   case $VERSION in
     neon)
@@ -65,7 +70,7 @@ setup_version() {
       export LD=arm-linux-androideabi-ld
       export AR=arm-linux-androideabi-ar
       export CROSSPREFIX="${ARCH}-linux-androideabi"
-      export CC="ccache ${CROSSPREFIX}-gcc"
+      export CC="${CROSSPREFIX}-gcc"
       ;;
     armv7)
       export ARCH="arm"
@@ -74,7 +79,7 @@ setup_version() {
       export LD=arm-linux-androideabi-ld
       export AR=arm-linux-androideabi-ar
       export CROSSPREFIX="${ARCH}-linux-androideabi"
-      export CC="ccache ${CROSSPREFIX}-gcc"
+      export CC="${CROSSPREFIX}-gcc"
       ;;
     vfp)
       export ARCH="arm"
@@ -83,7 +88,7 @@ setup_version() {
       export LD=arm-linux-androideabi-ld
       export AR=arm-linux-androideabi-ar
       export CROSSPREFIX="${ARCH}-linux-androideabi"
-      export CC="ccache ${CROSSPREFIX}-gcc"
+      export CC="${CROSSPREFIX}-gcc"
       ;;
     armv6)
       export ARCH="arm"
@@ -92,7 +97,7 @@ setup_version() {
       export LD=arm-linux-androideabi-ld
       export AR=arm-linux-androideabi-ar
       export CROSSPREFIX="${ARCH}-linux-androideabi"
-      export CC="ccache ${CROSSPREFIX}-gcc"
+      export CC="${CROSSPREFIX}-gcc"
       ;;
     armv5)
       export ARCH="arm"
@@ -101,7 +106,9 @@ setup_version() {
       export LD=arm-linux-androideabi-ld
       export AR=arm-linux-androideabi-ar
       export CROSSPREFIX="${ARCH}-linux-androideabi"
-      export CC="ccache ${CROSSPREFIX}-gcc"
+      export CC="${CROSSPREFIX}-gcc"
+      export FFMPEG_FLAGS="--disable-asm"
+      export X264_FLAGS="--disable-asm"
       ;;
     mips)
       export ARCH="mips"
@@ -109,7 +116,7 @@ setup_version() {
       export EXTRA_LDFLAGS=""
       export LD=mipsel-linux-android-ld
       export AR=mipsel-linux-android-ar
-      export CROSSPREFIX="mipsel-linux-android"
+      export CROSSPREFIX="${TOOLCHAIN}/bin/mipsel-linux-android"
       export CC="ccache ${CROSSPREFIX}-gcc"
       export FFMPEG_FLAGS="--disable-asm"
       export X264_FLAGS="--disable-asm"
@@ -145,14 +152,17 @@ build_x264() {
   pushd $X264SOURCE
     local X264BUILD="$X264DEST/$VERSION"
     mkdir -p $X264BUILD || exit 1
+    echo "---------------------------"
     echo "buiding x264 to $X264BUILD"
+    echo "patch=$PATH"
+    echo "cross-prefix=${CROSSPREFIX}-"
     ./configure \
       $X264_FLAGS \
       --host=arm-linux \
       --disable-cli \
       --enable-pic \
-      --enable-shared \
-      --cross-prefix=${CROSSPREFIX}-  \
+      --enable-static \
+      --cross-prefix=${CROSSPREFIX}- \
       --sysroot=$SYSROOT \
       --extra-cflags="$CFLAGS $X264_EXTRA_CFLAGS" \
       --extra-ldflags="$X264_EXTRA_LDFLAGS" \
@@ -177,6 +187,7 @@ build_ffmpeg() {
 
     local FFMPEGBUILD="$FFMPEGDEST/$VERSION"
     mkdir -p $FFMPEGBUILD || exit 1
+    echo "---------------------------"
     echo "buiding ffmpeg to $FFMPEGBUILD"
     ./configure \
       $FFMPEG_FLAGS \
@@ -185,7 +196,7 @@ build_ffmpeg() {
       --enable-cross-compile \
       --cross-prefix=${CROSSPREFIX}- \
       --sysroot=$SYSROOT \
-      --enable-shared \
+      --enable-static \
       --disable-symver \
       --disable-doc \
       --disable-htmlpages \
@@ -224,7 +235,7 @@ build_ffmpeg() {
       --enable-network \
       --enable-swscale  \
       --enable-hwaccels \
-      --disable-avfilter \
+      --enable-avfilter \
       --enable-asm \
       --enable-version3 \
       --prefix="$FFMPEGBUILD" \
@@ -244,13 +255,34 @@ build_ffmpeg() {
     rm libavcodec/log2_tab.o
     rm libswresample/log2_tab.o
     rm libavformat/log2_tab.o
-  echo "$CC -lm -lz -shared --sysroot=$SYSROOT -Wl,--no-undefined -Wl,-z,noexecstack $FFMPEG_EXTRA_LDFLAGS libavutil/*.o libavutil/arm/*.o libavcodec/*.o libavcodec/arm/*.o libavformat/*.o libswresample/*.o libswscale/*.o compat/*.o libswresample/arm/*.o libavfilter/*.o -o $FFMPEGBUILD/libffmpeg.so"
-  $CC -lm -lz -shared --sysroot=$SYSROOT -Wl,--no-undefined -Wl,-z,noexecstack $FFMPEG_EXTRA_LDFLAGS libavutil/*.o libavutil/arm/*.o libavcodec/*.o libavcodec/arm/*.o libavformat/*.o libswresample/*.o libswscale/*.o compat/*.o libswresample/arm/*.o libavfilter/*.o  -o $FFMPEGBUILD/libffmpeg.so
+  # echo "$CC -lm -lz -shared --sysroot=$SYSROOT -Wl,--no-undefined -Wl,-z,noexecstack $FFMPEG_EXTRA_LDFLAGS libavutil/*.o libavutil/arm/*.o libavcodec/*.o libavcodec/arm/*.o libavformat/*.o libswresample/*.o libswscale/*.o compat/*.o libswresample/arm/*.o libavfilter/*.o -o $FFMPEGBUILD/libffmpeg.so"
+  # $CC -lm -lz -shared --sysroot=$SYSROOT -Wl,--no-undefined -Wl,-z,noexecstack $FFMPEG_EXTRA_LDFLAGS libavutil/*.o libavutil/arm/*.o libavcodec/*.o libavcodec/arm/*.o libavformat/*.o libswresample/*.o libswscale/*.o compat/*.o libswresample/arm/*.o libavfilter/*.o  -o $FFMPEGBUILD/libbzmpeg.so
 
-  cp $FFMPEGBUILD/libffmpeg.so $FFMPEGBUILD/libffmpeg-debug.so
+  # cp $FFMPEGBUILD/libbzmpeg.so $FFMPEGBUILD/libbzmpeg-debug.so
 
-  arm-linux-androideabi-strip --strip-unneeded $FFMPEGBUILD/libffmpeg.so
+  # arm-linux-androideabi-strip --strip-unneeded $FFMPEGBUILD/libbzmpeg.so
 
+    $LD \
+    -rpath-link=${SYSROOT}usr/lib \
+    -L${SYSROOT}usr/lib \
+    -L$FFMPEGBUILD/lib \
+    -soname ${SONAME} -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o \
+    $FFMPEGBUILD/${SONAME} \
+    libavcodec/libavcodec.a \
+    libavfilter/libavfilter.a \
+    libswresample/libswresample.a \
+    libavformat/libavformat.a \
+    libavutil/libavutil.a \
+    libswscale/libswscale.a \
+    libpostproc/libpostproc.a \
+    $X264BUILD/lib/libx264.a \
+    -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker \
+    $TOOLCHAIN/lib/gcc/${CROSSPREFIX}/4.9.x/libgcc.a
+
+    cp $FFMPEGBUILD/${SONAME} $FFMPEGBUILD/libffmpeg-debug.so
+    arm-linux-androideabi-strip --strip-unneeded $FFMPEGBUILD/${SONAME}
+
+    echo SO-Dir=${FFMPEGBUILD}/${SONAME}
   popd
 }
 
@@ -262,19 +294,15 @@ build_version() {
   build_ffmpeg $VERSION
 }
 
-#checkout_x264
+checkout_x264
 checkout_ffmpeg
 
-# build_x264 "neon"
-# build_x264 "armv7"
-# build_ffmpeg "armv7"
+# build_version "armv7"
 
-# build_version "x86"
-build_version "armv7"
-# for version in neon armv5 armv6 armv7 vfp mips x86 x86_64; do
-#   build_version $version
-# done
+for version in armv5 armv6 armv7 vfp; do
+  build_version $version
+done
 
-# for version in mips x86; do
+# for version in neon armv5 armv6 armv7 vfp mips x86; do
 #   build_version $version
 # done
