@@ -10,7 +10,7 @@ SYSROOT=$TOOLCHAIN/sysroot/
 export PATH=$TOOLCHAIN/bin/:$PATH/
 SONAME=libffmpeg.so
 
-export ANDROID_NDK=/Users/luoye/Library/Android/sdk/ndk-bundle
+# export ANDROID_NDK=/Users/luoye/Library/Android/sdk/ndk-bundle
 
 if [ -z $ANDROID_NDK ]; then
   ANDROID_NDK=$NDK
