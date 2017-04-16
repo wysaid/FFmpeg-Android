@@ -8,9 +8,9 @@ X264SOURCE=`pwd`/x264
 TOOLCHAIN=`pwd`/tmp/vplayer
 SYSROOT=$TOOLCHAIN/sysroot/
 export PATH=$TOOLCHAIN/bin/:$PATH/
-SONAME=libffmpeg.so
+SONAME=libbzffmpeg.so
 
-# export ANDROID_NDK=/Users/luoye/Library/Android/sdk/ndk-bundle
+export ANDROID_NDK=/Users/luoye/Library/Android/sdk/ndk-bundle
 
 if [ -z $ANDROID_NDK ]; then
   ANDROID_NDK=$NDK
@@ -210,7 +210,6 @@ build_ffmpeg() {
       --disable-avdevice \
       --disable-bsfs \
       --disable-devices \
-      --disable-everything \
       --disable-protocols  \
       --enable-protocol=file  \
       --enable-protocol=pipe  \
@@ -222,12 +221,14 @@ build_ffmpeg() {
       --enable-demuxer=mov \
       --enable-demuxer=mp3 \
       --enable-demuxer=aac \
+      --enable-demuxer=mpegts \
       --disable-decoders \
       --enable-decoder=aac \
       --enable-decoder=h264 \
       --enable-decoder=mp3 \
       --disable-muxers \
       --enable-muxer=mp4 \
+      --enable-muxer=mpegts \
       --disable-encoders \
       --enable-encoder=aac \
       --enable-encoder=libx264 \
@@ -297,11 +298,11 @@ build_version() {
 checkout_x264
 checkout_ffmpeg
 
-# build_version "armv7"
+build_version "armv7"
 
-for version in armv5 armv6 armv7 vfp; do
-  build_version $version
-done
+# for version in armv5 armv6 armv7 vfp; do
+#   build_version $version
+# done
 
 # for version in neon armv5 armv6 armv7 vfp mips x86; do
 #   build_version $version
