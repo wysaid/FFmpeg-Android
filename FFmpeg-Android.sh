@@ -213,11 +213,11 @@ build_ffmpeg() {
       --disable-protocols  \
       --enable-protocol=file  \
       --enable-protocol=pipe  \
+      --enable-protocol=concat \
       --disable-parsers \
       --enable-parser=h264 \
       --enable-parser=aac \
       --disable-demuxers \
-      --enable-demuxer=mp4 \
       --enable-demuxer=mov \
       --enable-demuxer=mp3 \
       --enable-demuxer=aac \
@@ -226,12 +226,16 @@ build_ffmpeg() {
       --enable-decoder=aac \
       --enable-decoder=h264 \
       --enable-decoder=mp3 \
+      --enable-decoder=png \
       --disable-muxers \
       --enable-muxer=mp4 \
+      --enable-muxer=mov \
+      --enable-muxer=mp3 \
       --enable-muxer=mpegts \
       --disable-encoders \
       --enable-encoder=aac \
       --enable-encoder=libx264 \
+      --enable-encoder=png \
       --enable-gpl \
       --enable-network \
       --enable-swscale  \
