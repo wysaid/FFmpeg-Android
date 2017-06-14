@@ -211,6 +211,7 @@ build_ffmpeg() {
       --disable-bsfs \
       --disable-devices \
       --disable-protocols  \
+      --enable-zlib \
       --enable-protocol=file  \
       --enable-protocol=pipe  \
       --enable-protocol=concat \
@@ -222,23 +223,27 @@ build_ffmpeg() {
       --enable-demuxer=mp3 \
       --enable-demuxer=aac \
       --enable-demuxer=mpegts \
+      --enable-demuxer=image2 \
       --disable-decoders \
       --enable-decoder=aac \
       --enable-decoder=h264 \
       --enable-decoder=mp3 \
       --enable-decoder=png \
+      --enable-decoder=mjpeg \
       --disable-muxers \
       --enable-muxer=mp4 \
       --enable-muxer=mov \
       --enable-muxer=mp3 \
       --enable-muxer=mpegts \
+      --enable-muxer=image2 \
       --disable-encoders \
       --enable-encoder=aac \
       --enable-encoder=libx264 \
       --enable-encoder=png \
+      --enable-encoder=mjpeg \
       --enable-gpl \
       --enable-network \
-      --enable-swscale  \
+      --enable-swscale \
       --enable-hwaccels \
       --enable-avfilter \
       --enable-asm \
