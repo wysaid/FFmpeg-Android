@@ -27,6 +27,9 @@ temp_prefix=${PREFIX}/ffmpeg/android/arm64-v8a
 rm -rf $temp_prefix
 export PATH=$PREBUILT/bin/:$PATH/
 
+rm compat/strtod.o
+rm compat/strtod.d
+
 function build_arm64
 {
   ./configure \
