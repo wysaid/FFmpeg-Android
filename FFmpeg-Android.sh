@@ -55,7 +55,7 @@ checkout_x264() {
 }
 
 prepare_ndk() {
-  $ANDROID_NDK/build/tools/make-standalone-toolchain.sh --force --arch=$ARCH --platform=android-14 --install-dir=$TOOLCHAIN
+  $ANDROID_NDK/build/tools/make_standalone_toolchain.py --force --arch=$ARCH --api=21 --install-dir=$TOOLCHAIN
 }
 
 setup_version() {
@@ -133,6 +133,15 @@ setup_version() {
       export FFMPEG_FLAGS="--disable-asm"
       export X264_FLAGS="--disable-asm"
       ;;
+    arm64_v8a)
+      export ARCH="arm64"
+      export EXTRA_CFLAGS="-march=aarch64 -mfpu=vfpv3-d16 -mfloat-abi=softfp"
+      export EXTRA_LDFLAGS="-Wl,--fix-cortex-a8"
+      export LD=aarch64-linux-androideabi-ld
+      export AR=aarch64-linux-androideabi-ar
+      export CROSSPREFIX="aarch64-linux-android"
+      export CC="ccache aarch64-linux-android-gcc-4.9.x"
+      ;;
     *)
       echo "$VERSION is not a supported architecture."
       exit 1;
@@ -158,11 +167,11 @@ build_x264() {
     echo "cross-prefix=${CROSSPREFIX}-"
     ./configure \
       $X264_FLAGS \
-      --host=arm-linux \
+      --host=aarch64-linux \
       --disable-cli \
       --enable-pic \
       --enable-static \
-      --cross-prefix=${CROSSPREFIX}- \
+      --cross-prefix=aarch64-linux-android- \
       --sysroot=$SYSROOT \
       --extra-cflags="$CFLAGS $X264_EXTRA_CFLAGS" \
       --extra-ldflags="$X264_EXTRA_LDFLAGS" \
@@ -307,7 +316,8 @@ build_version() {
 checkout_x264
 checkout_ffmpeg
 
-build_version "armv7"
+#build_version "armv7"
+build_version "arm64_v8a"
 
 # for version in armv5 armv6 armv7 vfp; do
 #   build_version $version
