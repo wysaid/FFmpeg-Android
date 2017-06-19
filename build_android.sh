@@ -6,11 +6,14 @@ export SONAME=libbzffmpeg.so
 echo NDK-Dir=${NDK}
 echo PREFIX=${PREFIX}
 
-cd x264
+
+root_dir=`pwd`
+
+cd $root_dir/build_script/x264
 
 ./build_android_all.sh
 
 
-cd ../ffmpeg
+cd $root_dir/build_script/ffmpeg
 
 ./build_android_all.sh
