@@ -18,8 +18,8 @@ GENERAL="\
 --cc=${CROSS_PREFIX}gcc \
 --cross-prefix=$CROSS_PREFIX \
 --nm=${CROSS_PREFIX}nm \
---extra-cflags="-I${PREFIX}/x264/arm/include" \
---extra-ldflags="-L${PREFIX}/x264/arm/lib" "
+--extra-cflags="-I${PREFIX}/x264/armeabi-v7a/include" \
+--extra-ldflags="-L${PREFIX}/x264/armeabi-v7a/lib" "
 
 MODULES="\
 --enable-gpl \
@@ -31,202 +31,138 @@ export PATH=$NDK_STANDALONE_TOOLCHAIN/bin:$PATH/
 
 git clean -fdx
 
-function build_ARMv7() {
+echo ./configure \
+  --target-os=linux \
+  --prefix=${TEMP_PREFIX} \
+  ${GENERAL} \
+  --sysroot=$SYSROOT \
+  --extra-cflags="-DANDROID -fPIC -ffunction-sections -funwind-tables -fstack-protector -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300" \
+  --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog" \
+  --enable-zlib \
+  --enable-static \
+  --disable-shared \
+  --disable-symver \
+  --disable-doc \
+  --disable-htmlpages \
+  --disable-manpages \
+  --disable-podpages \
+  --disable-txtpages \
+  --disable-ffplay \
+  --disable-ffmpeg \
+  --disable-ffprobe \
+  --disable-ffserver \
+  --disable-avdevice \
+  --disable-bsfs \
+  --disable-devices \
+  --disable-protocols \
+  --enable-zlib \
+  --enable-protocol=file \
+  --enable-protocol=pipe \
+  --enable-protocol=concat \
+  --disable-parsers \
+  --enable-parser=h264 \
+  --enable-parser=aac \
+  --disable-demuxers \
+  --enable-demuxer=mov \
+  --enable-demuxer=mp3 \
+  --enable-demuxer=aac \
+  --enable-demuxer=mpegts \
+  --enable-demuxer=image2 \
+  --disable-decoders \
+  --enable-decoder=aac \
+  --enable-decoder=h264 \
+  --enable-decoder=mp3 \
+  --enable-decoder=png \
+  --enable-decoder=mjpeg \
+  --disable-muxers \
+  --enable-muxer=mp4 \
+  --enable-muxer=mov \
+  --enable-muxer=mp3 \
+  --enable-muxer=mpegts \
+  --enable-muxer=image2 \
+  --disable-encoders \
+  --enable-encoder=aac \
+  --enable-encoder=libx264 \
+  --enable-encoder=png \
+  --enable-encoder=mjpeg \
+  --enable-gpl \
+  --disable-network \
+  --enable-hwaccels \
+  --disable-avfilter \
+  --enable-asm \
+  --enable-version3 \
+  ${MODULES} \
+  --disable-doc \
+  --enable-neon \
+  --disable-filters
 
-  # ./configure \
-  # --prefix=$PREFIX \
-  # --disable-shared \
-  # --enable-static \
-  # --disable-ffmpeg \
-  # --disable-ffplay \
-  # --disable-ffprobe \
-  # --disable-ffserver \
-  # --disable-doc \
-  # --disable-symver \
-  # --disable-avdevice \
-  # --disable-avfilter \
-  # --enable-small \
-  # --enable-asm \
-  # --enable-neon \
-  # --cross-prefix=$CROSS_PREFIX \
-  # --target-os=linux \
-  # --arch=arm \
-  # --extra-cflags="-mfloat-abi=softfp -mfpu=neon -I${PREFIX}/x264/arm/include" \
-  # --extra-ldflags="-L${PREFIX}/x264/arm/lib" \
-  # --enable-cross-compile \
-  # --sysroot=$SYSROOT \
-  # --disable-parsers \
-  # --enable-parser=aac \
-  # --enable-parser=h264 \
-  # --disable-encoders \
-  # --disable-decoders \
-  # --enable-decoder=h264 \
-  # --disable-network \
-  # --disable-protocols \
-  # --enable-protocol=file \
-  # --disable-filters \
-  # --enable-encoder=aac \
-  # --enable-decoder=aac \
-  # --enable-gpl \
-  # --enable-encoder=libx264 \
-  # --enable-libx264
+./configure \
+  --target-os=linux \
+  --prefix=${TEMP_PREFIX} \
+  ${GENERAL} \
+  --sysroot=$SYSROOT \
+  --extra-cflags="-DANDROID -O3 -fPIC -ffunction-sections -funwind-tables -fstack-protector -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300" \
+  --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog" \
+  --enable-zlib \
+  --enable-static \
+  --disable-shared \
+  --disable-symver \
+  --disable-doc \
+  --disable-htmlpages \
+  --disable-manpages \
+  --disable-podpages \
+  --disable-txtpages \
+  --disable-ffplay \
+  --disable-ffmpeg \
+  --disable-ffprobe \
+  --disable-ffserver \
+  --disable-avdevice \
+  --disable-bsfs \
+  --disable-devices \
+  --disable-protocols \
+  --enable-zlib \
+  --enable-protocol=file \
+  --enable-protocol=pipe \
+  --enable-protocol=concat \
+  --disable-parsers \
+  --enable-parser=h264 \
+  --enable-parser=aac \
+  --disable-demuxers \
+  --enable-demuxer=mov \
+  --enable-demuxer=mp3 \
+  --enable-demuxer=aac \
+  --enable-demuxer=mpegts \
+  --enable-demuxer=image2 \
+  --disable-decoders \
+  --enable-decoder=aac \
+  --enable-decoder=h264 \
+  --enable-decoder=mp3 \
+  --enable-decoder=png \
+  --enable-decoder=mjpeg \
+  --disable-muxers \
+  --enable-muxer=mp4 \
+  --enable-muxer=mov \
+  --enable-muxer=mp3 \
+  --enable-muxer=mpegts \
+  --enable-muxer=image2 \
+  --disable-encoders \
+  --enable-encoder=aac \
+  --enable-encoder=libx264 \
+  --enable-encoder=png \
+  --enable-encoder=mjpeg \
+  --enable-gpl \
+  --disable-network \
+  --enable-hwaccels \
+  --disable-avfilter \
+  --enable-asm \
+  --enable-version3 \
+  ${MODULES} \
+  --disable-doc \
+  --enable-neon \
+  --disable-filters
 
-  echo ./configure \
-    --target-os=linux \
-    --prefix=${TEMP_PREFIX} \
-    ${GENERAL} \
-    --sysroot=$SYSROOT \
-    --extra-cflags="-DANDROID -fPIC -ffunction-sections -funwind-tables -fstack-protector -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300" \
-    --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog" \
-    --enable-zlib \
-    --enable-static \
-    --enable-shared \
-    --disable-symver \
-    --disable-doc \
-    --disable-htmlpages \
-    --disable-manpages \
-    --disable-podpages \
-    --disable-txtpages \
-    --disable-ffplay \
-    --disable-ffmpeg \
-    --disable-ffprobe \
-    --disable-ffserver \
-    --disable-avdevice \
-    --disable-bsfs \
-    --disable-devices \
-    --disable-protocols \
-    --enable-zlib \
-    --enable-protocol=file \
-    --enable-protocol=pipe \
-    --enable-protocol=concat \
-    --disable-parsers \
-    --enable-parser=h264 \
-    --enable-parser=aac \
-    --disable-demuxers \
-    --enable-demuxer=mov \
-    --enable-demuxer=mp3 \
-    --enable-demuxer=aac \
-    --enable-demuxer=mpegts \
-    --enable-demuxer=image2 \
-    --disable-decoders \
-    --enable-decoder=aac \
-    --enable-decoder=h264 \
-    --enable-decoder=mp3 \
-    --enable-decoder=png \
-    --enable-decoder=mjpeg \
-    --disable-muxers \
-    --enable-muxer=mp4 \
-    --enable-muxer=mov \
-    --enable-muxer=mp3 \
-    --enable-muxer=mpegts \
-    --enable-muxer=image2 \
-    --disable-encoders \
-    --enable-encoder=aac \
-    --enable-encoder=libx264 \
-    --enable-encoder=png \
-    --enable-encoder=mjpeg \
-    --enable-gpl \
-    --disable-network \
-    --enable-hwaccels \
-    --disable-avfilter \
-    --enable-asm \
-    --enable-version3 \
-    ${MODULES} \
-    --disable-doc \
-    --enable-neon \
-    --disable-filters
+make clean
+make -j$(getconf _NPROCESSORS_ONLN)
+make install
 
-  ./configure \
-    --target-os=linux \
-    --prefix=${TEMP_PREFIX} \
-    ${GENERAL} \
-    --sysroot=$SYSROOT \
-    --extra-cflags="-DANDROID -fPIC -ffunction-sections -funwind-tables -fstack-protector -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300" \
-    --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog" \
-    --enable-zlib \
-    --enable-static \
-    --enable-shared \
-    --disable-symver \
-    --disable-doc \
-    --disable-htmlpages \
-    --disable-manpages \
-    --disable-podpages \
-    --disable-txtpages \
-    --disable-ffplay \
-    --disable-ffmpeg \
-    --disable-ffprobe \
-    --disable-ffserver \
-    --disable-avdevice \
-    --disable-bsfs \
-    --disable-devices \
-    --disable-protocols \
-    --enable-zlib \
-    --enable-protocol=file \
-    --enable-protocol=pipe \
-    --enable-protocol=concat \
-    --disable-parsers \
-    --enable-parser=h264 \
-    --enable-parser=aac \
-    --disable-demuxers \
-    --enable-demuxer=mov \
-    --enable-demuxer=mp3 \
-    --enable-demuxer=aac \
-    --enable-demuxer=mpegts \
-    --enable-demuxer=image2 \
-    --disable-decoders \
-    --enable-decoder=aac \
-    --enable-decoder=h264 \
-    --enable-decoder=mp3 \
-    --enable-decoder=png \
-    --enable-decoder=mjpeg \
-    --disable-muxers \
-    --enable-muxer=mp4 \
-    --enable-muxer=mov \
-    --enable-muxer=mp3 \
-    --enable-muxer=mpegts \
-    --enable-muxer=image2 \
-    --disable-encoders \
-    --enable-encoder=aac \
-    --enable-encoder=libx264 \
-    --enable-encoder=png \
-    --enable-encoder=mjpeg \
-    --enable-gpl \
-    --disable-network \
-    --enable-hwaccels \
-    --disable-avfilter \
-    --enable-asm \
-    --enable-version3 \
-    ${MODULES} \
-    --disable-doc \
-    --enable-neon \
-    --disable-filters
-
-  make clean
-  make -j$(getconf _NPROCESSORS_ONLN)
-  make install
-
-  # arm-linux-androideabi-ld \
-  #   -rpath-link=$SYSROOT/usr/lib \
-  #   -L$SYSROOT/usr/lib \
-  #   -L$TEMP_PREFIX/lib \
-  #   -soname ${SONAME} -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o \
-  #   $TEMP_PREFIX/${SONAME} \
-  #   libavcodec/libavcodec.a \
-  #   libavfilter/libavfilter.a \
-  #   libswresample/libswresample.a \
-  #   libavformat/libavformat.a \
-  #   libavutil/libavutil.a \
-  #   libswscale/libswscale.a \
-  #   libpostproc/libpostproc.a \
-  #   ${PREFIX}/x264/arm/lib/libx264.a \
-  #   -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker \
-  #   $NDK_STANDALONE_TOOLCHAIN/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a
-
-  # cp $TEMP_PREFIX/${SONAME} $TEMP_PREFIX/libffmpeg-debug.so
-  # arm-linux-androideabi-strip --strip-unneeded $TEMP_PREFIX/${SONAME}
-
-  # echo SO-Dir=${TEMP_PREFIX}/${SONAME}
-}
-
-build_ARMv7
 echo "Android ARMv7-a builds finished"

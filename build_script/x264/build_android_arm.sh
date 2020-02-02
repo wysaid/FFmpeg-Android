@@ -17,7 +17,7 @@ fi
 export SYSROOT=$NDK_STANDALONE_TOOLCHAIN/sysroot
 export CROSS_PREFIX=$NDK_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-
 
-TEMP_PREFIX=${PREFIX}/x264/arm
+TEMP_PREFIX=${PREFIX}/x264/armeabi-v7a
 rm -rf $TEMP_PREFIX
 mkdir -p $TEMP_PREFIX
 
