@@ -1,4 +1,4 @@
-APP_ABI := x86_64
+APP_ABI := all
 # APP_ABI := armeabi-v7a arm64-v8a
 APP_PLATFORM := android-16
 # system - 使用默认最小的C++运行库，这样生成的应用体积小，内存占用小，但部分功能将无法支持
