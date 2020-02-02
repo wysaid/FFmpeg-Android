@@ -10,5 +10,6 @@ tested-version:
 0. Install git, Android ndk
 1. `$ export NDK=/path/to/your/android-ndk`
 2. `$ ./build_android.sh`
-3. libffmpeg.so will be built to `build/ffmpeg`
+3. `$ cd jni && $NDK/ndk-build`
+3. libffmpeg.so will be built to `libs`
 
