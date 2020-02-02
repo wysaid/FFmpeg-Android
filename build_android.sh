@@ -37,7 +37,10 @@ if [[ ! -d "${THIS_DIR}/ffmpeg" ]]; then
 	fi
 fi
 
-source $THIS_DIR/build_script/setup_android_toolchain
+bash $THIS_DIR/build_script/setup_android_toolchain
+export NDK_TOOLCHAIN_DIR=$THIS_DIR/build_script/ndk-build-toolchain
+
+cd $THIS_DIR
 
 echo "### build x264 start ###"
 

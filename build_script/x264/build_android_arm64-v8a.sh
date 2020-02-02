@@ -1,31 +1,44 @@
 #!/bin/bash
-git reset --hard
-git clean -f -d
-git checkout `cat ../x264-version`
-git log --pretty=format:%H -1 > ../x264-version
 
-#arm64 最小必须是android-21
-PLATFORM=$NDK/platforms/android-21/arch-arm64/
-TOOLCHAIN=$NDK/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64
+cd $1
+echo "param = $1"
+pwd
 
-temp_prefix=${PREFIX}/x264/android/arm64
+git clean -fd
+
+export NDK_STANDALONE_TOOLCHAIN=$NDK_TOOLCHAIN_DIR/arm64
+
+if [[ ! -d "${NDK_STANDALONE_TOOLCHAIN}" ]]; then
+  echo "NDK_STANDALONE_TOOLCHAIN=$NDK_STANDALONE_TOOLCHAIN"
+  echo "Invalid NDK_STANDALONE_TOOLCHAIN."
+  exit 1
+fi
+
+export SYSROOT=$NDK_STANDALONE_TOOLCHAIN/sysroot
+export CROSS_PREFIX=$NDK_STANDALONE_TOOLCHAIN/bin/aarch64-linux-android-
+
+temp_prefix=${PREFIX}/x264/arm64
 rm -rf $temp_prefix
+mkdir -p $temp_prefix
 
-function build_one
-{
-  ./configure \
-  --prefix=$temp_prefix \
+echo ./configure \
+  --prefix=${temp_prefix} \
   --enable-static \
   --enable-pic \
   --host=aarch64-linux \
-  --cross-prefix=$TOOLCHAIN/bin/aarch64-linux-android- \
-  --sysroot=$PLATFORM
+  --cross-prefix=$CROSS_PREFIX \
+  --sysroot=$SYSROOT
 
-  make clean
-  make -j10
-  make install
-}
+./configure \
+  --prefix=${temp_prefix} \
+  --enable-static \
+  --enable-pic \
+  --host=arm-linux \
+  --cross-prefix=$CROSS_PREFIX \
+  --sysroot=$SYSROOT
 
-build_one
+make clean
+make -j$(getconf _NPROCESSORS_ONLN)
+make install
 
-echo Android ARM64 builds finished
+echo "### Android ARM64 builds finished"

@@ -7,10 +7,7 @@ fi
 
 THIS_DIR=`cd $(dirname "$0"); pwd`
 
-X264_DIR=$(
-  cd $(dirname "$1")
-  pwd
-)
+X264_DIR=$1;
 
 echo "THIS_DIR=$THIS_DIR"
 
@@ -18,10 +15,10 @@ cd $X264_DIR
 git clean -fdx
 
 # Build arm v6 v7a
-bash $THIS_DIR/build_android_arm.sh "$X264_DIR"
+# bash $THIS_DIR/build_android_arm.sh "$X264_DIR"
 
 # Build arm64 v8a
-# bash $THIS_DIR/build_android_arm64-v8a.sh "$X264_DIR"
+bash $THIS_DIR/build_android_arm64-v8a.sh "$X264_DIR"
 
 # Build mips
 # bash $THIS_DIR/build_android_mips.sh "$X264_DIR"
