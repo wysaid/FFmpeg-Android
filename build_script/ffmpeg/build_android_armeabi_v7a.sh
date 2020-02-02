@@ -23,8 +23,8 @@ MODULES="\
 --enable-gpl \
 --enable-libx264"
 
-temp_prefix=${PREFIX}/ffmpeg/android/armeabi-v7a
-rm -rf $temp_prefix
+TEMP_PREFIX=${PREFIX}/ffmpeg/android/armeabi-v7a
+rm -rf $TEMP_PREFIX
 export PATH=$PREBUILT/bin/:$PATH/
 
 rm compat/strtod.o
@@ -34,7 +34,7 @@ function build_ARMv7
 {
   ./configure \
   --target-os=linux \
-  --prefix=${temp_prefix} \
+  --prefix=${TEMP_PREFIX} \
   ${GENERAL} \
   --sysroot=$PLATFORM \
   --extra-cflags="-DANDROID -fPIC -ffunction-sections -funwind-tables -fstack-protector -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300" \
@@ -103,9 +103,9 @@ function build_ARMv7
    arm-linux-androideabi-ld \
     -rpath-link=${PLATFORM}usr/lib \
     -L${PLATFORM}usr/lib \
-    -L$temp_prefix/lib \
+    -L$TEMP_PREFIX/lib \
     -soname ${SONAME} -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o \
-    $temp_prefix/${SONAME} \
+    $TEMP_PREFIX/${SONAME} \
     libavcodec/libavcodec.a \
     libavfilter/libavfilter.a \
     libswresample/libswresample.a \
@@ -117,10 +117,10 @@ function build_ARMv7
     -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker \
     $PREBUILT/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a
 
-    cp $temp_prefix/${SONAME} $temp_prefix/libffmpeg-debug.so
-    arm-linux-androideabi-strip --strip-unneeded $temp_prefix/${SONAME}
+    cp $TEMP_PREFIX/${SONAME} $TEMP_PREFIX/libffmpeg-debug.so
+    arm-linux-androideabi-strip --strip-unneeded $TEMP_PREFIX/${SONAME}
 
-    echo SO-Dir=${temp_prefix}/${SONAME}
+    echo SO-Dir=${TEMP_PREFIX}/${SONAME}
 }
 
 build_ARMv7

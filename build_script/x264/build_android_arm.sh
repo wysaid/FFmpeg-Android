@@ -17,12 +17,12 @@ fi
 export SYSROOT=$NDK_STANDALONE_TOOLCHAIN/sysroot
 export CROSS_PREFIX=$NDK_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-
 
-temp_prefix=${PREFIX}/x264/arm
-rm -rf $temp_prefix
-mkdir -p $temp_prefix
+TEMP_PREFIX=${PREFIX}/x264/arm
+rm -rf $TEMP_PREFIX
+mkdir -p $TEMP_PREFIX
 
 echo ./configure \
-  --prefix=${temp_prefix} \
+  --prefix=${TEMP_PREFIX} \
   --enable-static \
   --enable-pic \
   --host=arm-linux \
@@ -30,7 +30,7 @@ echo ./configure \
   --sysroot=$SYSROOT
 
 ./configure \
-  --prefix=${temp_prefix} \
+  --prefix=${TEMP_PREFIX} \
   --enable-static \
   --enable-pic \
   --host=arm-linux \

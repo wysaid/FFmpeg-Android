@@ -23,8 +23,8 @@ MODULES="\
 --enable-gpl \
 --enable-libx264"
 
-temp_prefix=${PREFIX}/ffmpeg/android/arm64-v8a
-rm -rf $temp_prefix
+TEMP_PREFIX=${PREFIX}/ffmpeg/android/arm64-v8a
+rm -rf $TEMP_PREFIX
 export PATH=$PREBUILT/bin/:$PATH/
 
 rm compat/strtod.o
@@ -35,7 +35,7 @@ function build_arm64
   ./configure \
   --logfile=conflog.txt \
   --target-os=linux \
-  --prefix=${temp_prefix} \
+  --prefix=${TEMP_PREFIX} \
   ${GENERAL} \
   --sysroot=$PLATFORM \
   --extra-cflags="" \
@@ -102,9 +102,9 @@ function build_arm64
    aarch64-linux-android-ld \
     -rpath-link=${PLATFORM}usr/lib \
     -L${PLATFORM}usr/lib \
-    -L$temp_prefix/lib \
+    -L$TEMP_PREFIX/lib \
     -soname ${SONAME} -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o \
-    $temp_prefix/${SONAME} \
+    $TEMP_PREFIX/${SONAME} \
     libavcodec/libavcodec.a \
     libavfilter/libavfilter.a \
     libswresample/libswresample.a \
@@ -116,10 +116,10 @@ function build_arm64
     -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker \
     $PREBUILT/lib/gcc/aarch64-linux-android/4.9.x/libgcc.a
 
-    cp $temp_prefix/${SONAME} $temp_prefix/libffmpeg-debug.so
-    aarch64-linux-android-strip --strip-unneeded $temp_prefix/${SONAME}
+    cp $TEMP_PREFIX/${SONAME} $TEMP_PREFIX/libffmpeg-debug.so
+    aarch64-linux-android-strip --strip-unneeded $TEMP_PREFIX/${SONAME}
 
-    echo SO-Dir=${temp_prefix}/${SONAME}
+    echo SO-Dir=${TEMP_PREFIX}/${SONAME}
 }
 
 build_arm64

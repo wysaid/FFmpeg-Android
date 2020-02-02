@@ -6,7 +6,7 @@ mkdir -p $THIS_DIR/ndk-build-toolchain
 
 export NDK_TOOLCHAIN_DIR=$THIS_DIR/ndk-build-toolchain
 
-mkdirp -p $NDK_TOOLCHAIN_DIR && cd $NDK_TOOLCHAIN_DIR && git init
+mkdir -p $NDK_TOOLCHAIN_DIR && cd $NDK_TOOLCHAIN_DIR && git init
 
 if [[ ! -d "$NDK_TOOLCHAIN_DIR/arm" ]]; then
 	$NDK/build/tools/make-standalone-toolchain.sh --arch=arm --toolchain=arm-linux-android-clang3.6 --platform=android-16 --install-dir=$NDK_TOOLCHAIN_DIR/arm --stl=libc++
