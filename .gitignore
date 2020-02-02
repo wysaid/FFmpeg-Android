@@ -3,3 +3,5 @@ build/
 tmp/
 *-build-*
 jni/
+obj/
+libs/

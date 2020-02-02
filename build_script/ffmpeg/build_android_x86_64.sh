@@ -36,7 +36,7 @@ echo ./configure \
   --prefix=${TEMP_PREFIX} \
   ${GENERAL} \
   --sysroot=$SYSROOT \
-  --extra-cflags="-DANDROID -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums" \
+  --extra-cflags="-DANDROID -fPIC -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums" \
   --extra-cflags="-march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel" \
   --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog" \
   --enable-zlib \
@@ -102,7 +102,7 @@ echo ./configure \
   --prefix=${TEMP_PREFIX} \
   ${GENERAL} \
   --sysroot=$SYSROOT \
-  --extra-cflags="-DANDROID -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums" \
+  --extra-cflags="-DANDROID -fPIC -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums" \
   --extra-cflags="-march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel" \
   --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog" \
   --enable-zlib \
