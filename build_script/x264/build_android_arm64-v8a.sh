@@ -33,7 +33,7 @@ echo ./configure \
   --prefix=${TEMP_PREFIX} \
   --enable-static \
   --enable-pic \
-  --host=arm-linux \
+  --host=aarch64-linux \
   --cross-prefix=$CROSS_PREFIX \
   --sysroot=$SYSROOT
 
