@@ -42,7 +42,7 @@ cd $THIS_DIR
 
 echo "### build x264 start ###"
 
-# bash $THIS_DIR/build_script/x264/build_android_all.sh "$THIS_DIR/x264"
+bash $THIS_DIR/build_script/x264/build_android_all.sh "$THIS_DIR/x264"
 echo "### build x264 end ###"
 
 # echo "### build ffmpeg start ###"

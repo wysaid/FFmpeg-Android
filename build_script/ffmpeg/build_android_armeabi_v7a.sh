@@ -33,6 +33,44 @@ git clean -fdx
 
 function build_ARMv7() {
 
+  # ./configure \
+  # --prefix=$PREFIX \
+  # --disable-shared \
+  # --enable-static \
+  # --disable-ffmpeg \
+  # --disable-ffplay \
+  # --disable-ffprobe \
+  # --disable-ffserver \
+  # --disable-doc \
+  # --disable-symver \
+  # --disable-avdevice \
+  # --disable-avfilter \
+  # --enable-small \
+  # --enable-asm \
+  # --enable-neon \
+  # --cross-prefix=$CROSS_PREFIX \
+  # --target-os=linux \
+  # --arch=arm \
+  # --extra-cflags="-mfloat-abi=softfp -mfpu=neon -I${PREFIX}/x264/arm/include" \
+  # --extra-ldflags="-L${PREFIX}/x264/arm/lib" \
+  # --enable-cross-compile \
+  # --sysroot=$SYSROOT \
+  # --disable-parsers \
+  # --enable-parser=aac \
+  # --enable-parser=h264 \
+  # --disable-encoders \
+  # --disable-decoders \
+  # --enable-decoder=h264 \
+  # --disable-network \
+  # --disable-protocols \
+  # --enable-protocol=file \
+  # --disable-filters \
+  # --enable-encoder=aac \
+  # --enable-decoder=aac \
+  # --enable-gpl \
+  # --enable-encoder=libx264 \
+  # --enable-libx264
+
   echo ./configure \
     --target-os=linux \
     --prefix=${TEMP_PREFIX} \
@@ -164,7 +202,7 @@ function build_ARMv7() {
     --disable-filters
 
   make clean
-  make -j10
+  make -j$(getconf _NPROCESSORS_ONLN)
   make install
 
   # arm-linux-androideabi-ld \
