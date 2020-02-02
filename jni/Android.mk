@@ -74,7 +74,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := ffmpeg
 LOCAL_SRC_FILES := decoder.c encoder.c
-LOCAL_LDLIBS := -llog -lz -fPIC -Wl,--no-warn-shared-textrel
+LOCAL_LDLIBS := -llog -lz -fPIC -fPIE -Wl,--no-warn-shared-textrel -Wl,-Bsymbolic
 LOCAL_CFLAGS := -fPIC -mfloat-abi=softfp -mfpu=neon -O3 -ffast-math -funroll-loops
 LOCAL_WHOLE_STATIC_LIBRARIES := libavformat_static \
 						libavcodec_static \

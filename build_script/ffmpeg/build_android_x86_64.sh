@@ -36,9 +36,8 @@ echo ./configure \
   --prefix=${TEMP_PREFIX} \
   ${GENERAL} \
   --sysroot=$SYSROOT \
-  --extra-cflags="-DANDROID -fPIC -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums" \
-  --extra-cflags="-march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel" \
-  --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog" \
+  --extra-cflags="-DANDROID -fPIC -fpic -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums -march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel" \
+  --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog -fPIC -fpic -fPIE" \
   --enable-zlib \
   --enable-static \
   --disable-shared \
@@ -95,16 +94,17 @@ echo ./configure \
   ${MODULES} \
   --disable-doc \
   --enable-neon \
-  --disable-filters
+  --disable-filters \
+  --enable-pic \
+  --enable-yasm 
 
 ./configure \
   --target-os=linux \
   --prefix=${TEMP_PREFIX} \
   ${GENERAL} \
   --sysroot=$SYSROOT \
-  --extra-cflags="-DANDROID -fPIC -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums" \
-  --extra-cflags="-march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel" \
-  --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog -fPIC" \
+  --extra-cflags="-DANDROID -fPIC -fpic -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums -march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel" \
+  --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog -fPIC -fpic -fPIE" \
   --enable-zlib \
   --enable-static \
   --disable-shared \
@@ -161,7 +161,9 @@ echo ./configure \
   ${MODULES} \
   --disable-doc \
   --enable-neon \
-  --disable-filters
+  --disable-filters \
+  --enable-pic \
+  --enable-yasm 
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)

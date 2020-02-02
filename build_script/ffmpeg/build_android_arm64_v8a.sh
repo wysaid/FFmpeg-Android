@@ -159,7 +159,9 @@ echo ./configure \
   ${MODULES} \
   --disable-doc \
   --enable-neon \
-  --disable-filters
+  --disable-filters \
+  --enable-pic \
+  --enable-yasm 
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)

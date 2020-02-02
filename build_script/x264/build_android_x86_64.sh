@@ -24,6 +24,7 @@ mkdir -p $TEMP_PREFIX
 echo ./configure \
   --prefix=${TEMP_PREFIX} \
   --enable-static \
+  --disable-cli \
   --enable-pic \
   --host=x86_64-linux \
   --cross-prefix=$CROSS_PREFIX \
@@ -31,8 +32,10 @@ echo ./configure \
 
 ./configure \
   --prefix=${TEMP_PREFIX} \
+  --extra-cflags="-fPIC -fpic" \
   --enable-static \
   --enable-pic \
+  --disable-cli \
   --host=x86_64-linux \
   --cross-prefix=$CROSS_PREFIX \
   --sysroot=$SYSROOT

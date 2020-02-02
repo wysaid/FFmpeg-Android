@@ -8,7 +8,7 @@ APP_PLATFORM := android-16
 # 使用STLport作为静态库，这项是Android开发网极力推荐的
 #APP_STL := stlport_static
 # APP_STL := c++_static
-# APP_CPPFLAGS := -frtti -std=c++11
+APP_CPPFLAGS := -frtti -std=c++11
 APP_OPTIM := release
 
 
