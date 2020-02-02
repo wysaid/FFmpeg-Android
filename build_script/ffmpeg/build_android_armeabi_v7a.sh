@@ -26,12 +26,11 @@ MODULES="\
 --enable-gpl \
 --enable-libx264"
 
-TEMP_PREFIX=${PREFIX}/ffmpeg/android/armeabi-v7a
+TEMP_PREFIX=${PREFIX}/ffmpeg/armeabi-v7a
 rm -rf $TEMP_PREFIX
 export PATH=$NDK_STANDALONE_TOOLCHAIN/bin:$PATH/
 
-rm compat/strtod.o
-rm compat/strtod.d
+git clean -fdx
 
 function build_ARMv7
 {
@@ -118,7 +117,7 @@ function build_ARMv7
     libpostproc/libpostproc.a \
     ${PREFIX}/x264/arm/lib/libx264.a \
     -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker \
-    $NDK_STANDALONE_TOOLCHAIN/bin/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a
+    $NDK_STANDALONE_TOOLCHAIN/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a
 
     cp $TEMP_PREFIX/${SONAME} $TEMP_PREFIX/libffmpeg-debug.so
     arm-linux-androideabi-strip --strip-unneeded $TEMP_PREFIX/${SONAME}
@@ -127,4 +126,4 @@ function build_ARMv7
 }
 
 build_ARMv7
-echo Android ARMv7-a builds finished
+echo "Android ARMv7-a builds finished"
