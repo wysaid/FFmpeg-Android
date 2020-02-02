@@ -1,11 +1,13 @@
 #!/bin/bash
-git reset --hard
-git clean -f -d
+
+cd $1;
+
+git clean -fd
 git checkout `cat ../x264-version`
 git log --pretty=format:%H -1 > ../x264-version
 
-PLATFORM=$NDK/platforms/android-14/arch-arm/
-TOOLCHAIN=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64
+export SYSROOT=$NDK/ndk-build-toolchain/sysroot
+export CROSS_PREFIX=$NDK/ndk-build-toolchain/bin/arm-linux-androideabi-
 
 temp_prefix=${PREFIX}/x264/android/arm
 rm -rf $temp_prefix
@@ -17,8 +19,8 @@ function build_one
   --enable-static \
   --enable-pic \
   --host=arm-linux \
-  --cross-prefix=$TOOLCHAIN/bin/arm-linux-androideabi- \
-  --sysroot=$PLATFORM
+  --cross-prefix=$CROSS_PREFIX \
+  --sysroot=$SYSROOT
 
   make clean
   make -j10

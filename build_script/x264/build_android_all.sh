@@ -1,34 +1,36 @@
 #!/usr/bin/env bash
 
-THIS_DIR=$(
-  cd $(dirname "$0")
-  pwd
-)
-echo "THIS_DIR=$THIS_DIR"
-cd ${THIS_DIR}
+if [[ -z "$1" ]]; then
+	echo "Invalid argument!"
+	exit 1;
+fi
+
+THIS_DIR=`cd $(dirname "$0"); pwd`
 
 X264_DIR=$(
-  cd ${THIS_DIR}/../../x264
+  cd $(dirname "$1")
   pwd
 )
 
+echo "THIS_DIR=$THIS_DIR"
+
 cd $X264_DIR
-git clean -ffdx
+git clean -fdx
 
 # Build arm v6 v7a
-bash $THIS_DIR/build_android_arm.sh
+bash $THIS_DIR/build_android_arm.sh "$X264_DIR"
 
 # Build arm64 v8a
-bash $THIS_DIR/build_android_arm64-v8a.sh
+# bash $THIS_DIR/build_android_arm64-v8a.sh "$X264_DIR"
 
 # Build mips
-# bash $THIS_DIR/build_android_mips.sh
+# bash $THIS_DIR/build_android_mips.sh "$X264_DIR"
 
 # Build mips64
-# bash $THIS_DIR/build_android_mips64.sh
+# bash $THIS_DIR/build_android_mips64.sh "$X264_DIR"
 
 # Build x86
-# bash $THIS_DIR/build_android_x86.sh
+# bash $THIS_DIR/build_android_x86.sh "$X264_DIR"
 
 # Build x86_64
-# bash $THIS_DIR/build_android_x86_64.sh
+# bash $THIS_DIR/build_android_x86_64.sh "$X264_DIR"

@@ -7,7 +7,7 @@ cd ${THIS_DIR}
 FFMPEG_DIR=`cd ${THIS_DIR}/../../ffmpeg; pwd`
 
 cd $FFMPEG_DIR
-git clean -ffdx
+git clean -fdx
 
 bash $THIS_DIR/build_android_armeabi_v7a.sh
 
