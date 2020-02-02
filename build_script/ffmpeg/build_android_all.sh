@@ -19,13 +19,13 @@ git clean -fdx
 bash $THIS_DIR/build_android_armeabi_v7a.sh "$FFMPEG_DIR"
 
 # Build arm64 v8a
-# bash $THIS_DIR/build_android_arm64_v8a.sh "$FFMPEG_DIR"
+bash $THIS_DIR/build_android_arm64_v8a.sh "$FFMPEG_DIR"
 
 # Build x86
-# bash $THIS_DIR/build_android_x86.sh "$FFMPEG_DIR"
+bash $THIS_DIR/build_android_x86.sh "$FFMPEG_DIR"
 
 # Build x86_64
-# bash $THIS_DIR/build_android_x86_64.sh "$FFMPEG_DIR"
+bash $THIS_DIR/build_android_x86_64.sh "$FFMPEG_DIR"
 
 # Build mips
 # bash $THIS_DIR/build_android_mips.sh "$FFMPEG_DIR"

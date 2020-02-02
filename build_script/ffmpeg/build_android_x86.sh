@@ -104,7 +104,7 @@ echo ./configure \
   --sysroot=$SYSROOT \
   --extra-cflags="-DANDROID -fPIC -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums" \
   --extra-cflags="-march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32" \
-  --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog" \
+  --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog -fPIC" \
   --enable-zlib \
   --enable-static \
   --disable-shared \
