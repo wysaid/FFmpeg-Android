@@ -10,8 +10,6 @@ SYSROOT=$TOOLCHAIN/sysroot/
 export PATH=$TOOLCHAIN/bin/:$PATH/
 SONAME=libbzffmpeg.so
 
-export ANDROID_NDK=/Users/luoye/Library/Android/sdk/ndk-bundle
-
 if [ -z $ANDROID_NDK ]; then
   ANDROID_NDK=$NDK
 fi
@@ -30,7 +28,8 @@ CFLAGS="-O3 -Wall -mthumb -pipe -fpic -fasm \
 
 checkout_ffmpeg() {
   if [ ! -d ffmpeg ]; then
-    git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg  
+#    git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg
+    git clone git@gitee.com:ChinaFFmpeg/ffmpeg.git ffmpeg
   fi
 
   pushd $FFMPEGSOURCE
@@ -43,7 +42,8 @@ checkout_ffmpeg() {
 
 checkout_x264() {
   if [ ! -d x264 ]; then
-    git clone git://git.videolan.org/x264.git
+    git clone git@gitee.com:wysaid/x264.git
+#    git clone https://code.videolan.org/videolan/x264.git
   fi
 
   pushd $X264SOURCE
