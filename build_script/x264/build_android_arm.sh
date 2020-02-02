@@ -3,8 +3,6 @@
 cd $1;
 
 git clean -fd
-git checkout `cat ../x264-version`
-git log --pretty=format:%H -1 > ../x264-version
 
 export SYSROOT=$NDK/ndk-build-toolchain/sysroot
 export CROSS_PREFIX=$NDK/ndk-build-toolchain/bin/arm-linux-androideabi-
