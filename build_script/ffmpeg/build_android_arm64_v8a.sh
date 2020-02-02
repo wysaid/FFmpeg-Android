@@ -16,8 +16,8 @@ GENERAL="\
 --cc=$PREBUILT/bin/aarch64-linux-android-gcc \
 --cross-prefix=$PREBUILT/bin/aarch64-linux-android- \
 --nm=$PREBUILT/bin/aarch64-linux-android-nm \
---extra-cflags="-I${PREFIX}/x264/android/arm64/include" \
---extra-ldflags="-L${PREFIX}/x264/android/arm64/lib" "
+--extra-cflags="-I${PREFIX}/x264/arm64/include" \
+--extra-ldflags="-L${PREFIX}/x264/arm64/lib" "
 
 MODULES="\
 --enable-gpl \
@@ -112,7 +112,7 @@ function build_arm64
     libavutil/libavutil.a \
     libswscale/libswscale.a \
     libpostproc/libpostproc.a \
-    ${PREFIX}/x264/android/arm64/lib/libx264.a \
+    ${PREFIX}/x264/arm64/lib/libx264.a \
     -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker \
     $PREBUILT/lib/gcc/aarch64-linux-android/4.9.x/libgcc.a
 

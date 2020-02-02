@@ -1,22 +1,25 @@
 #!/bin/bash
-git reset --hard
-git clean -f -d
-git checkout `cat ../ffmpeg-version`
-git log --pretty=format:%H -1 > ../ffmpeg-version
 
-PLATFORM=$NDK/platforms/android-14/arch-arm/
-PREBUILT=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64
+cd $1
+echo "param = $1"
+pwd
+
+git clean -fdx
+
+export NDK_STANDALONE_TOOLCHAIN=$NDK_TOOLCHAIN_DIR/arm
+export SYSROOT=$NDK_STANDALONE_TOOLCHAIN/sysroot
+export CROSS_PREFIX=$NDK_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-
 
 GENERAL="\
 --enable-small \
 --enable-cross-compile \
 --extra-libs="-lgcc" \
 --arch=arm \
---cc=$PREBUILT/bin/arm-linux-androideabi-gcc \
---cross-prefix=$PREBUILT/bin/arm-linux-androideabi- \
---nm=$PREBUILT/bin/arm-linux-androideabi-nm \
---extra-cflags="-I${PREFIX}/x264/android/arm/include" \
---extra-ldflags="-L${PREFIX}/x264/android/arm/lib" "
+--cc=${CROSS_PREFIX}gcc \
+--cross-prefix=$CROSS_PREFIX \
+--nm=${CROSS_PREFIX}nm \
+--extra-cflags="-I${PREFIX}/x264/arm/include" \
+--extra-ldflags="-L${PREFIX}/x264/arm/lib" "
 
 
 MODULES="\
@@ -25,7 +28,7 @@ MODULES="\
 
 TEMP_PREFIX=${PREFIX}/ffmpeg/android/armeabi-v7a
 rm -rf $TEMP_PREFIX
-export PATH=$PREBUILT/bin/:$PATH/
+export PATH=$NDK_STANDALONE_TOOLCHAIN/bin:$PATH/
 
 rm compat/strtod.o
 rm compat/strtod.d
@@ -36,9 +39,9 @@ function build_ARMv7
   --target-os=linux \
   --prefix=${TEMP_PREFIX} \
   ${GENERAL} \
-  --sysroot=$PLATFORM \
+  --sysroot=$SYSROOT \
   --extra-cflags="-DANDROID -fPIC -ffunction-sections -funwind-tables -fstack-protector -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300" \
-  --extra-ldflags="-Wl,-rpath-link=$PLATFORM/usr/lib -L$PLATFORM/usr/lib -nostdlib -lc -lm -ldl -llog" \
+  --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog" \
   --enable-zlib \
   --enable-static \
   --disable-symver \
@@ -101,8 +104,8 @@ function build_ARMv7
   make install
 
    arm-linux-androideabi-ld \
-    -rpath-link=${PLATFORM}usr/lib \
-    -L${PLATFORM}usr/lib \
+    -rpath-link=$SYSROOT/usr/lib \
+    -L$SYSROOT/usr/lib \
     -L$TEMP_PREFIX/lib \
     -soname ${SONAME} -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o \
     $TEMP_PREFIX/${SONAME} \
@@ -113,9 +116,9 @@ function build_ARMv7
     libavutil/libavutil.a \
     libswscale/libswscale.a \
     libpostproc/libpostproc.a \
-    ${PREFIX}/x264/android/arm/lib/libx264.a \
+    ${PREFIX}/x264/arm/lib/libx264.a \
     -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker \
-    $PREBUILT/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a
+    $NDK_STANDALONE_TOOLCHAIN/bin/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a
 
     cp $TEMP_PREFIX/${SONAME} $TEMP_PREFIX/libffmpeg-debug.so
     arm-linux-androideabi-strip --strip-unneeded $TEMP_PREFIX/${SONAME}

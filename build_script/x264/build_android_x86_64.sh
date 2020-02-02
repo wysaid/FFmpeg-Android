@@ -1,24 +1,44 @@
 #!/bin/bash
-NDK=/Users/yesimroy/Library/Android/sdk/ndk-bundle
-PLATFORM=$NDK/platforms/android-21/arch-x86_64/
-TOOLCHAIN=$NDK/toolchains/x86_64-4.9/prebuilt/darwin-x86_64
-PREFIX=./android/x86_64
 
-function build_one
-{
-  ./configure \
-  --prefix=$PREFIX \
+cd $1
+echo "param = $1"
+pwd
+
+git clean -fd
+
+export NDK_STANDALONE_TOOLCHAIN=$NDK_TOOLCHAIN_DIR/x86_64
+
+if [[ ! -d "${NDK_STANDALONE_TOOLCHAIN}" ]]; then
+  echo "NDK_STANDALONE_TOOLCHAIN=$NDK_STANDALONE_TOOLCHAIN"
+  echo "Invalid NDK_STANDALONE_TOOLCHAIN."
+  exit 1
+fi
+
+export SYSROOT=$NDK_STANDALONE_TOOLCHAIN/sysroot
+export CROSS_PREFIX=$NDK_STANDALONE_TOOLCHAIN/bin/x86_64-linux-android-
+
+TEMP_PREFIX=${PREFIX}/x264/x86_64
+rm -rf $TEMP_PREFIX
+mkdir -p $TEMP_PREFIX
+
+echo ./configure \
+  --prefix=${TEMP_PREFIX} \
   --enable-static \
   --enable-pic \
   --host=x86_64-linux \
-  --cross-prefix=$TOOLCHAIN/bin/x86_64-linux-android- \
-  --sysroot=$PLATFORM
+  --cross-prefix=$CROSS_PREFIX \
+  --sysroot=$SYSROOT
 
-  make clean
-  make
-  make install
-}
+./configure \
+  --prefix=${TEMP_PREFIX} \
+  --enable-static \
+  --enable-pic \
+  --host=x86_64-linux \
+  --cross-prefix=$CROSS_PREFIX \
+  --sysroot=$SYSROOT
 
-build_one
+make clean
+make -j$(getconf _NPROCESSORS_ONLN)
+make install
 
-echo Android x86_64 builds finished
+echo "### Android x86_64 builds finished"

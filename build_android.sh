@@ -14,8 +14,6 @@ export SONAME=libffmpeg.so
 echo NDK=${NDK}
 echo PREFIX=${PREFIX}
 
-git clean -fdx
-
 if [[ ! -d "${THIS_DIR}/x264" ]]; then
 	echo "cloning x264..."
 	if [[ "$1" == "--enable-gitee" ]]; then
@@ -44,9 +42,9 @@ cd $THIS_DIR
 
 echo "### build x264 start ###"
 
-bash $THIS_DIR/build_script/x264/build_android_all.sh "$THIS_DIR/x264"
+# bash $THIS_DIR/build_script/x264/build_android_all.sh "$THIS_DIR/x264"
 echo "### build x264 end ###"
 
 # echo "### build ffmpeg start ###"
-# bash $THIS_DIR/build_script/ffmpeg/build_android_all.sh "$THIS_DIR/ffmpeg"
+bash $THIS_DIR/build_script/ffmpeg/build_android_all.sh "$THIS_DIR/ffmpeg"
 # echo "### build ffmpeg end ###"
