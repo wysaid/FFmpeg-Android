@@ -1,31 +1,30 @@
 #!/usr/bin/env bash
 
-chmod a+x build_android_*.sh
+THIS_DIR=`cd $(dirname "$0"); pwd`
+echo "THIS_DIR=$THIS_DIR"
+cd ${THIS_DIR}
 
-src_dir=`pwd`
+FFMPEG_DIR=`cd ${THIS_DIR}/../../ffmpeg; pwd`
 
-# Build arm v6 v7a
-# ./build_android_armeabi.sh
+cd $FFMPEG_DIR
+git clean -fdx
 
-cd $src_dir
-cp build_android_armeabi_v7a.sh ../../ffmpeg/build_android_armeabi_v7a.sh
-cd ../../ffmpeg
-./build_android_armeabi_v7a.sh
+bash $THIS_DIR/build_android_armeabi_v7a.sh
 
 # Build arm64 v8a
-cd $src_dir
-cp build_android_arm64_v8a.sh ../../ffmpeg/build_android_arm64_v8a.sh
-cd ../../ffmpeg
-./build_android_arm64_v8a.sh
+bash $THIS_DIR/build_android_arm64_v8a.sh
 
 # Build x86
-# ./build_android_x86.sh
+# bash $THIS_DIR/build_android_x86.sh
 
 # Build x86_64
-# ./build_android_x86_64.sh
+# cd $FFMPEG_DIR
+# bash $THIS_DIR/build_android_x86_64.sh
 
 # Build mips
-# ./build_android_mips.sh
+# cd $FFMPEG_DIR
+# bash $THIS_DIR/build_android_mips.sh
 
 # Build mips64   //may fail
-# ./build_android_mips64.sh
+# cd $FFMPEG_DIR
+# bash $THIS_DIR/build_android_mips64.sh
