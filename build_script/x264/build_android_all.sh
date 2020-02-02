@@ -1,28 +1,34 @@
 #!/usr/bin/env bash
 
-chmod a+x build_android_*.sh
+THIS_DIR=$(
+  cd $(dirname "$0")
+  pwd
+)
+echo "THIS_DIR=$THIS_DIR"
+cd ${THIS_DIR}
 
-src_dir=`pwd`
+X264_DIR=$(
+  cd ${THIS_DIR}/../../x264
+  pwd
+)
+
+cd $X264_DIR
+git clean -ffdx
 
 # Build arm v6 v7a
-cp build_android_arm.sh ../../x264/build_android_arm.sh
-cd ../../x264
-./build_android_arm.sh 
+bash $THIS_DIR/build_android_arm.sh
 
 # Build arm64 v8a
-cd $src_dir
-cp build_android_arm64-v8a.sh ../../x264/build_android_arm64-v8a.sh
-cd ../../x264
- ./build_android_arm64-v8a.sh
+bash $THIS_DIR/build_android_arm64-v8a.sh
 
 # Build mips
-# ./build_android_mips.sh
+# bash $THIS_DIR/build_android_mips.sh
 
 # Build mips64
-# ./build_android_mips64.sh
+# bash $THIS_DIR/build_android_mips64.sh
 
 # Build x86
-# ./build_android_x86.sh
+# bash $THIS_DIR/build_android_x86.sh
 
 # Build x86_64
-# ./build_android_x86_64.sh
+# bash $THIS_DIR/build_android_x86_64.sh
