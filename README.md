@@ -1,8 +1,8 @@
 # FFmpeg-Android
 
 tested-version:
-	- ffmpeg tag: n2.8.6 (af21d609a0ddeeddad4fdefecb19fd4e13744f80)
-	- x264: 90a61ec76424778c050524f682a33f115024be96
+  - ffmpeg tag: n2.8.6 (af21d609a0ddeeddad4fdefecb19fd4e13744f80)
+  - x264: 90a61ec76424778c050524f682a33f115024be96
 
 
 # Build
