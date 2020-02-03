@@ -35,6 +35,12 @@ if [[ ! -d "${THIS_DIR}/ffmpeg" ]]; then
 	fi
 fi
 
+cd $THIS_DIR/x264
+git checkout my_compile || git my_compile -b compile 90a61ec76424778c050524f682a33f115024be96
+
+cd $THIS_DIR/ffmpeg
+git checkout 3.0.7 || git my_compile -b 3.0.7 n3.0.7
+
 bash $THIS_DIR/build_script/setup_android_toolchain
 export NDK_TOOLCHAIN_DIR=$THIS_DIR/build_script/ndk-build-toolchain
 
@@ -48,3 +54,8 @@ echo "### build x264 end ###"
 echo "### build ffmpeg start ###"
 bash $THIS_DIR/build_script/ffmpeg/build_android_all.sh "$THIS_DIR/ffmpeg"
 echo "### build ffmpeg end ###"
+
+echo "### gen ffmpeg.so ###"
+cp $PREFIX/ffmpeg/armeabi-v7a/include/* $THIS_DIR/jni/
+cd $THIS_DIR/jni
+$NDK/ndk-build -j$(getconf _NPROCESSORS_ONLN)
