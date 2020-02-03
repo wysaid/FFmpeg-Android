@@ -56,6 +56,6 @@ bash $THIS_DIR/build_script/ffmpeg/build_android_all.sh "$THIS_DIR/ffmpeg"
 echo "### build ffmpeg end ###"
 
 echo "### gen ffmpeg.so ###"
-cp $PREFIX/ffmpeg/armeabi-v7a/include/* $THIS_DIR/jni/
+cp -rf $PREFIX/ffmpeg/armeabi-v7a/include/* $THIS_DIR/jni/
 cd $THIS_DIR/jni
 $NDK/ndk-build -j$(getconf _NPROCESSORS_ONLN)
