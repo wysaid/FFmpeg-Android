@@ -9,28 +9,28 @@ X264_DIR=$(BUILD_ROOT_DIR)/x264
 #static version of libavcodec
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libavcodec_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/$(TARGET_ARCH_ABI)/lib/libavcodec.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libavcodec/libavcodec.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 #static version of libavformat
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libavformat_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/$(TARGET_ARCH_ABI)/lib/libavformat.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libavformat/libavformat.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 #static version of libswscale
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libswscale_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/$(TARGET_ARCH_ABI)/lib/libswscale.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libswscale/libswscale.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 #static version of libavutil
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libavutil_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/$(TARGET_ARCH_ABI)/lib/libavutil.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libavutil/libavutil.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
@@ -51,21 +51,21 @@ include $(PREBUILT_STATIC_LIBRARY)
 #static version of libswresample
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libswresample_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/$(TARGET_ARCH_ABI)/lib/libswresample.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libswresample/libswresample.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 #static version of libpostproc
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libpostproc_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/$(TARGET_ARCH_ABI)/lib/libpostproc.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libpostproc/libpostproc.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 #static version of libx264
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libx264_static
-LOCAL_SRC_FILES:= $(X264_DIR)/$(TARGET_ARCH_ABI)/lib/libx264.a
+LOCAL_SRC_FILES:= $(X264_DIR)/libx264.a
 # LOCAL_CFLAGS := -march=armv7-a -mfloat-abi=softfp -mfpu=neon -O3 -ffast-math -funroll-loops
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
