@@ -39,10 +39,11 @@ if [[ ! -d "${THIS_DIR}/ffmpeg" ]]; then
 fi
 
 cd $THIS_DIR/x264
-git checkout my_compile || git checkout -b my_compile 90a61ec76424778c050524f682a33f115024be96
+git checkout my_compile || git checkout -b my_compile 5db6aa6cab1b146e07b60cc1736a01f21da01154
 
 cd $THIS_DIR/ffmpeg
-git checkout 2.8.6 || git checkout -b 2.8.6 n2.8.6
+# git checkout 2.8.6 || git checkout -b 2.8.6 n2.8.6
+git checkout 3.4.8 || git checkout -b 3.4.8 n3.4.8
 
 bash $THIS_DIR/build_script/setup_android_toolchain
 export NDK_TOOLCHAIN_DIR=$THIS_DIR/build_script/ndk-build-toolchain
