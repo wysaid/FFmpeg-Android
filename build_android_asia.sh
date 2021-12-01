@@ -5,4 +5,4 @@ THIS_DIR=$(
     pwd
 )
 
-bash $THIS_DIR/build_android.sh
+bash $THIS_DIR/build_android.sh --enable-gitee
