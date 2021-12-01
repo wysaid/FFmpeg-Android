@@ -5,3 +5,5 @@ tmp/
 jni/
 obj/
 libs/
+ffmpeg/
+x264/

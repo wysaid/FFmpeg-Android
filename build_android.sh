@@ -17,6 +17,9 @@ export SONAME=libffmpeg.so
 echo NDK=${NDK}
 echo PREFIX=${PREFIX}
 
+rm -rf "$PREFIX"
+mkdir -p "$PREFIX"
+
 if [[ ! -d "${THIS_DIR}/x264" ]]; then
     echo "cloning x264..."
     if [[ "$1" == "--enable-gitee" ]]; then

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 if [[ -z "$1" ]]; then
-  echo "Invalid argument!"
-  exit 1
+    echo "Invalid argument!"
+    exit 1
 fi
 
 THIS_DIR=$(
-  cd $(dirname "$0")
-  pwd
+    cd $(dirname "$0")
+    pwd
 )
 FFMPEG_DIR=$1
 
