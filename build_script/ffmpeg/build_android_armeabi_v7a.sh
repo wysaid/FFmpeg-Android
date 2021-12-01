@@ -94,7 +94,8 @@ echo ./configure \
     ${MODULES} \
     --disable-doc \
     --enable-neon \
-    --disable-filters
+    --disable-filters \
+    --disable-linux-perf
 
 ./configure \
     --target-os=linux \
@@ -161,7 +162,8 @@ echo ./configure \
     --enable-neon \
     --disable-filters \
     --enable-pic \
-    --enable-yasm
+    --enable-yasm \
+    --disable-linux-perf
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)
