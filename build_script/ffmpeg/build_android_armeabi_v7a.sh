@@ -95,7 +95,9 @@ echo ./configure \
     --disable-doc \
     --enable-neon \
     --disable-filters \
-    --disable-linux-perf
+    --disable-linux-perf \
+    --disable-armv5te \
+    --disable-neon
 
 ./configure \
     --target-os=linux \
@@ -163,7 +165,9 @@ echo ./configure \
     --disable-filters \
     --enable-pic \
     --enable-yasm \
-    --disable-linux-perf
+    --disable-linux-perf \
+    --disable-armv5te \
+    --disable-neon
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)

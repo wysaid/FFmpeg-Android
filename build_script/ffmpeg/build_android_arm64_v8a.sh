@@ -26,7 +26,7 @@ MODULES="\
 --enable-libx264"
 
 TEMP_PREFIX=${PREFIX}/ffmpeg/arm64-v8a
-# rm -rf $TEMP_PREFIX
+rm -rf $TEMP_PREFIX
 export PATH=$NDK_STANDALONE_TOOLCHAIN/bin:$PATH/
 
 git clean -fdx
