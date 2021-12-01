@@ -1,36 +1,36 @@
 LOCAL_PATH := $(call my-dir)
 
 BUILD_ROOT_DIR=$(LOCAL_PATH)/../build
-FFMPEG_DIR=$(BUILD_ROOT_DIR)/ffmpeg
-X264_DIR=$(BUILD_ROOT_DIR)/x264
+FFMPEG_DIR=$(BUILD_ROOT_DIR)/ffmpeg/$(TARGET_ARCH_ABI)/lib
+X264_DIR=$(BUILD_ROOT_DIR)/x264/$(TARGET_ARCH_ABI)/lib
 
 #include $(call all-subdir-makefiles)
 
 #static version of libavcodec
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libavcodec_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libavcodec/libavcodec.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libavcodec.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 #static version of libavformat
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libavformat_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libavformat/libavformat.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libavformat.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 #static version of libswscale
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libswscale_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libswscale/libswscale.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libswscale.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 #static version of libavutil
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libavutil_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libavutil/libavutil.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libavutil.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
@@ -51,14 +51,14 @@ include $(PREBUILT_STATIC_LIBRARY)
 #static version of libswresample
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libswresample_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libswresample/libswresample.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libswresample.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 #static version of libpostproc
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libpostproc_static
-LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libpostproc/libpostproc.a
+LOCAL_SRC_FILES:= $(FFMPEG_DIR)/libpostproc.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
