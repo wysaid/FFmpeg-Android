@@ -22,23 +22,14 @@ mkdir -p "$PREFIX"
 
 if [[ ! -d "${THIS_DIR}/x264" ]]; then
     echo "cloning x264..."
-    if [[ "$1" == "--enable-gitee" ]]; then
-        git clone https://gitee.com/wysaid/x264.git --recursive
-    else
-        echo "use '--enable-gitee' to clone with gitee. (maybe faster with gitee in Asia)"
-        git clone https://code.videolan.org/videolan/x264.git --recursive
-    fi
+    git clone https://code.videolan.org/videolan/x264.git --recursive
 
 fi
 
 if [[ ! -d "${THIS_DIR}/ffmpeg" ]]; then
     echo "cloning ffmpeg..."
-    if [[ "$1" == "--enable-gitee" ]]; then
-        git clone https://gitee.com/ChinaFFmpeg/ffmpeg.git ffmpeg --recursive
-    else
-        echo "use '--enable-gitee' to clone with gitee. (maybe faster with gitee in Asia)"
-        git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg --recursive
-    fi
+    git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg --recursive
+
 fi
 
 cd $THIS_DIR/x264
