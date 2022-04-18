@@ -39,7 +39,10 @@ cd $THIS_DIR/ffmpeg
 # git checkout 2.8.6 || git checkout -b 2.8.6 n2.8.6
 git checkout 3.4.8 || git checkout -b 3.4.8 n3.4.8
 
-bash $THIS_DIR/build_script/setup_android_toolchain
+if ! bash $THIS_DIR/build_script/setup_android_toolchain; then
+    echo "setup android_toolchain failed"
+    exit 1
+fi
 export NDK_TOOLCHAIN_DIR=$THIS_DIR/build_script/ndk-build-toolchain
 
 cd $THIS_DIR
