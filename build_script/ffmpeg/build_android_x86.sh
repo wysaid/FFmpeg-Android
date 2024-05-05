@@ -98,8 +98,7 @@ echo ./configure \
     --disable-doc \
     --enable-neon \
     --disable-filters \
-    --enable-yasm \
-    --disable-linux-perf
+    --enable-yasm
 
 ./configure \
     --target-os=linux \
@@ -164,8 +163,7 @@ echo ./configure \
     --disable-doc \
     --enable-neon \
     --disable-filters \
-    --enable-yasm \
-    --disable-linux-perf
+    --enable-yasm
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)
