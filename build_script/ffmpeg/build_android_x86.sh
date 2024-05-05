@@ -36,8 +36,8 @@ echo ./configure \
     --prefix=${TEMP_PREFIX} \
     ${GENERAL} \
     --sysroot=$SYSROOT \
-    --extra-cflags="-DANDROID -fPIC -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums -march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32" \
-    --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog -fPIC" \
+    --extra-cflags="-DANDROID -fuse-ld=bfd -fno-PIC -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums -march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32" \
+    --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog -fuse-ld=bfd -fno-PIC" \
     --enable-zlib \
     --enable-static \
     --disable-shared \
@@ -95,7 +95,6 @@ echo ./configure \
     --disable-doc \
     --enable-neon \
     --disable-filters \
-    --enable-pic \
     --enable-yasm \
     --disable-linux-perf
 
@@ -104,8 +103,8 @@ echo ./configure \
     --prefix=${TEMP_PREFIX} \
     ${GENERAL} \
     --sysroot=$SYSROOT \
-    --extra-cflags="-DANDROID -fPIC -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums -march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32" \
-    --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog -fPIC" \
+    --extra-cflags="-DANDROID -fuse-ld=bfd -fno-PIC -O3 -ffunction-sections -funwind-tables -fstack-protector  -mfloat-abi=softfp -mfpu=vfpv3-d16 -fomit-frame-pointer -fstrict-aliasing -funswitch-loops -finline-limit=300 -fasm -Wno-psabi -fno-short-enums -march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32" \
+    --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -nostdlib -lc -lm -ldl -llog -fuse-ld=bfd -fno-PIC" \
     --enable-zlib \
     --enable-static \
     --disable-shared \
@@ -163,7 +162,6 @@ echo ./configure \
     --disable-doc \
     --enable-neon \
     --disable-filters \
-    --enable-pic \
     --enable-yasm \
     --disable-linux-perf
 

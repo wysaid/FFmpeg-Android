@@ -24,20 +24,18 @@ mkdir -p $TEMP_PREFIX
 echo ./configure \
     --prefix=${TEMP_PREFIX} \
     --enable-static \
-    --enable-pic \
     --host=i686-linux \
     --cross-prefix=$CROSS_PREFIX \
     --sysroot=$SYSROOT \
-    --extra-ldflags="-fuse-ld=bfd"
+    --extra-ldflags="-fuse-ld=bfd -fno-PIC"
 
 ./configure \
     --prefix=${TEMP_PREFIX} \
     --enable-static \
-    --enable-pic \
     --host=i686-linux \
     --cross-prefix=$CROSS_PREFIX \
     --sysroot=$SYSROOT \
-    --extra-ldflags="-fuse-ld=bfd"
+    --extra-ldflags="-fuse-ld=bfd -fno-PIC"
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)
