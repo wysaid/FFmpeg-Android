@@ -27,7 +27,8 @@ echo ./configure \
     --enable-pic \
     --host=i686-linux \
     --cross-prefix=$CROSS_PREFIX \
-    --sysroot=$SYSROOT
+    --sysroot=$SYSROOT \
+    --extra-ldflags="-fuse-ld=bfd"
 
 ./configure \
     --prefix=${TEMP_PREFIX} \
@@ -35,7 +36,8 @@ echo ./configure \
     --enable-pic \
     --host=i686-linux \
     --cross-prefix=$CROSS_PREFIX \
-    --sysroot=$SYSROOT
+    --sysroot=$SYSROOT \
+    --extra-ldflags="-fuse-ld=bfd"
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)
