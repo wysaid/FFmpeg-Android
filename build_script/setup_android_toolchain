@@ -30,7 +30,7 @@ if [[ ! -f "$STANDALONE_TOOL" ]]; then
     fi
 
     if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86" ]]; then
-        "$STANDALONE_TOOL" --arch=x86 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/x86 --stl=libc++ --install-dir=$NDK_TOOLCHAIN_DIR/x86
+        "$STANDALONE_TOOL" --arch=x86 --platform=android-22 --stl=libc++ --install-dir=$NDK_TOOLCHAIN_DIR/x86
     fi
 
     if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86_64" ]]; then
@@ -38,8 +38,6 @@ if [[ ! -f "$STANDALONE_TOOL" ]]; then
     fi
 
 else
-    export STANDALONE_TOOL="$NDK/build/tools/make_standalone_toolchain.py"
-
     if [[ ! -d "$NDK_TOOLCHAIN_DIR/arm" ]]; then
         "$STANDALONE_TOOL" --arch=arm --api=22 --install-dir=$NDK_TOOLCHAIN_DIR/arm --stl=libc++
     fi
@@ -49,7 +47,7 @@ else
     fi
 
     if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86" ]]; then
-        "$STANDALONE_TOOL" --arch=x86 --api=22 --install-dir=$NDK_TOOLCHAIN_DIR/x86 --stl=libc++ --install-dir=$NDK_TOOLCHAIN_DIR/x86
+        "$STANDALONE_TOOL" --arch=x86 --api=22 --install-dir=$NDK_TOOLCHAIN_DIR/x86 --stl=libc++
     fi
 
     if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86_64" ]]; then
