@@ -11,20 +11,49 @@ export NDK_TOOLCHAIN_DIR=$THIS_DIR/ndk-build-toolchain
 
 mkdir -p $NDK_TOOLCHAIN_DIR && cd $NDK_TOOLCHAIN_DIR && git init
 
-if [[ ! -d "$NDK_TOOLCHAIN_DIR/arm" ]]; then
-    $NDK/build/tools/make-standalone-toolchain.sh --arch=arm --toolchain=arm-linux-android-clang3.6 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/arm --stl=libc++
+if [[ -z "$NDK" ]]; then
+    echo "You should set the NDK variable to your ndk-dir!"
+    exit 1
 fi
 
-if [[ ! -d "$NDK_TOOLCHAIN_DIR/arm64" ]]; then
-    $NDK/build/tools/make-standalone-toolchain.sh --arch=arm64 --toolchain=aarch64-linux-android-clang3.6 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/arm64 --stl=libc++
-fi
+export STANDALONE_TOOL="$NDK/build/tools/make-standalone-toolchain.sh"
 
-if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86" ]]; then
-    $NDK/build/tools/make-standalone-toolchain.sh --arch=x86 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/x86 --stl=libc++
-fi
+if [[ -f "$STANDALONE_TOOL" ]]; then
 
-if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86_64" ]]; then
-    $NDK/build/tools/make-standalone-toolchain.sh --arch=x86_64 --toolchain=x86_64-linux-android-clang3.6 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/x86_64 --stl=libc++
+    if [[ ! -d "$NDK_TOOLCHAIN_DIR/arm" ]]; then
+        "$STANDALONE_TOOL" --arch=arm --toolchain=arm-linux-android-clang3.6 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/arm --stl=libc++
+    fi
+
+    if [[ ! -d "$NDK_TOOLCHAIN_DIR/arm64" ]]; then
+        "$STANDALONE_TOOL" --arch=arm64 --toolchain=aarch64-linux-android-clang3.6 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/arm64 --stl=libc++
+    fi
+
+    if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86" ]]; then
+        "$STANDALONE_TOOL" --arch=x86 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/x86 --stl=libc++ --install-dir=$NDK_TOOLCHAIN_DIR/x86
+    fi
+
+    if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86_64" ]]; then
+        "$STANDALONE_TOOL" --arch=x86_64 --toolchain=x86_64-linux-android-clang3.6 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/x86_64 --stl=libc++
+    fi
+
+else
+    export STANDALONE_TOOL="$NDK/build/tools/make_standalone_toolchain.py"
+
+    if [[ ! -d "$NDK_TOOLCHAIN_DIR/arm" ]]; then
+        "$STANDALONE_TOOL" --arch=arm --api=22 --install-dir=$NDK_TOOLCHAIN_DIR/arm --stl=libc++
+    fi
+
+    if [[ ! -d "$NDK_TOOLCHAIN_DIR/arm64" ]]; then
+        "$STANDALONE_TOOL" --arch=arm64 --api=22 --install-dir=$NDK_TOOLCHAIN_DIR/arm64 --stl=libc++
+    fi
+
+    if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86" ]]; then
+        "$STANDALONE_TOOL" --arch=x86 --api=22 --install-dir=$NDK_TOOLCHAIN_DIR/x86 --stl=libc++ --install-dir=$NDK_TOOLCHAIN_DIR/x86
+    fi
+
+    if [[ ! -d "$NDK_TOOLCHAIN_DIR/x86_64" ]]; then
+        "$STANDALONE_TOOL" --arch=x86_64 --api=22 --install-dir=$NDK_TOOLCHAIN_DIR/x86_64 --stl=libc++
+    fi
 fi
 
 # if [[ "$NDK_STANDALONE_TOOLCHAIN" == "" ]]; then
