@@ -5,6 +5,7 @@ echo "param = $1"
 pwd
 
 git clean -fd
+set -e
 
 export NDK_STANDALONE_TOOLCHAIN=$NDK_TOOLCHAIN_DIR/x86_64
 

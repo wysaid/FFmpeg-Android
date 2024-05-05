@@ -6,6 +6,8 @@ pwd
 
 git clean -fd
 
+set -e
+
 export NDK_STANDALONE_TOOLCHAIN=$NDK_TOOLCHAIN_DIR/arm
 
 if [[ ! -d "${NDK_STANDALONE_TOOLCHAIN}" ]]; then

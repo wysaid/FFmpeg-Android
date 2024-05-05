@@ -10,6 +10,8 @@ THIS_DIR=$(
     pwd
 )
 
+set -e
+
 X264_DIR=$1
 
 echo "THIS_DIR=$THIS_DIR"
@@ -18,13 +20,13 @@ cd $X264_DIR
 git clean -fdx
 
 # Build arm v6 v7a
-bash $THIS_DIR/build_android_arm.sh "$X264_DIR" || exit 1
+bash $THIS_DIR/build_android_arm.sh "$X264_DIR"
 
 # Build arm64 v8a
-bash $THIS_DIR/build_android_arm64-v8a.sh "$X264_DIR" || exit 1
+bash $THIS_DIR/build_android_arm64-v8a.sh "$X264_DIR"
 
 # Build x86
-bash $THIS_DIR/build_android_x86.sh "$X264_DIR" || exit 1
+bash $THIS_DIR/build_android_x86.sh "$X264_DIR"
 
 # Build x86_64
-bash $THIS_DIR/build_android_x86_64.sh "$X264_DIR" || exit 1
+bash $THIS_DIR/build_android_x86_64.sh "$X264_DIR"
