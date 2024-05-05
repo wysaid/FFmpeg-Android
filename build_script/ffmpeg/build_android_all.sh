@@ -16,6 +16,8 @@ echo "THIS_DIR=$THIS_DIR"
 cd $FFMPEG_DIR
 git clean -fdx
 
+set -e
+
 bash $THIS_DIR/build_android_armeabi_v7a.sh "$FFMPEG_DIR"
 
 # Build arm64 v8a

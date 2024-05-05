@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+set -e
+
 if [[ -z "$NDK" ]]; then
     echo "NDK variable not set, please do 'export NDK=/path/of/ndk-bundle'"
+    exit 1
 fi
 
 THIS_DIR=$(

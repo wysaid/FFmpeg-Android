@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cd $1
 echo "param = $1"
 pwd
@@ -25,6 +27,7 @@ MODULES="\
 --enable-gpl \
 --enable-libx264"
 
+export PKG_CONFIG_PATH=${PREFIX}/x264/arm64-v8a/lib/pkgconfig:$PKG_CONFIG_PATH
 TEMP_PREFIX=${PREFIX}/ffmpeg/arm64-v8a
 rm -rf $TEMP_PREFIX
 export PATH=$NDK_STANDALONE_TOOLCHAIN/bin:$PATH/
@@ -94,7 +97,7 @@ echo ./configure \
     --disable-doc \
     --enable-neon \
     --disable-filters \
-    --disable-linux-perf
+    --pkg-config-flags="--static"
 
 ./configure \
     --target-os=linux \
@@ -161,7 +164,7 @@ echo ./configure \
     --disable-filters \
     --enable-pic \
     --enable-yasm \
-    --disable-linux-perf
+    --pkg-config-flags="--static"
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)

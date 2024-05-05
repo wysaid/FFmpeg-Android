@@ -1,16 +1,12 @@
 # FFmpeg-Android
 
-1. tested-version 1:
-    - ffmpeg tag: n2.8.6 (af21d609a0ddeeddad4fdefecb19fd4e13744f80)
-    - x264: 90a61ec76424778c050524f682a33f115024be96
+Support building FFmpeg for Android with x264.
 
-2. tested-version 2 (Default):
-    - ffmpeg tag: n3.4.8
-    - x264: 5db6aa6cab1b146e07b60cc1736a01f21da01154
-
-3. tested-version 3:
-    - ffmpeg tag: n4.4.4
-    - x264: 7ed753b10a61d0be95f683289dfb925b800b0676
+| FFmpeg | x264 | Android NDK | Tested |
+| ------ | ---- | ----------- | ------ |
+| 2.8.6 | 90a61ec76424778c050524f682a33f115024be96 | ndk20,ndk21,ndk22,ndk26 | Yes |
+| 3.4.8 | 5db6aa6cab1b146e07b60cc1736a01f21da01154 | ndk20,ndk21,ndk22,ndk26 | Yes |
+| 4.4.4 | 7ed753b10a61d0be95f683289dfb925b800b0676 | ndk26 | Yes |
 
 ## Build
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cd $1
 echo "param = $1"
 pwd
@@ -24,6 +26,8 @@ GENERAL="\
 MODULES="\
 --enable-gpl \
 --enable-libx264"
+
+export PKG_CONFIG_PATH=${PREFIX}/x264/x86/lib/pkgconfig:$PKG_CONFIG_PATH
 
 TEMP_PREFIX=${PREFIX}/ffmpeg/x86
 rm -rf $TEMP_PREFIX
