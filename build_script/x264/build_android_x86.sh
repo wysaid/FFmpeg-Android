@@ -28,16 +28,14 @@ echo ./configure \
     --enable-static \
     --host=i686-linux \
     --cross-prefix=$CROSS_PREFIX \
-    --sysroot=$SYSROOT \
-    --extra-ldflags="-fuse-ld=bfd -fno-PIC"
+    --sysroot=$SYSROOT
 
 ./configure \
     --prefix=${TEMP_PREFIX} \
     --enable-static \
     --host=i686-linux \
     --cross-prefix=$CROSS_PREFIX \
-    --sysroot=$SYSROOT \
-    --extra-ldflags="-fuse-ld=bfd -fno-PIC"
+    --sysroot=$SYSROOT
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)

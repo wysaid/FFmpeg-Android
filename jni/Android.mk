@@ -74,11 +74,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := ffmpeg
 
 LOCAL_CFLAGS := -fPIC -O3
-LOCAL_LDLIBS := -llog -lz -Wl,-Bsymbolic -fPIC -fPIE
-
-ifeq ($(TARGET_ARCH_ABI), x86)
-LOCAL_LDLIBS := $(LOCAL_LDLIBS) -z notext
-endif
+LOCAL_LDLIBS := -llog -lz -fPIC -fPIE
 
 LOCAL_WHOLE_STATIC_LIBRARIES := libavformat_static \
 						libavcodec_static \
