@@ -18,11 +18,11 @@ while [[ $# -gt 0 ]]; do
     case $1 in
     -f | --ffmpeg)
         shift
-        FFMPEG_VERSION=$1
+        export FFMPEG_VERSION=$1
         ;;
     -x | --x264)
         shift
-        X264_VERSION=$1
+        export X264_VERSION=$1
         ;;
     *)
         echo "Unknown parameter passed: $1"
@@ -55,6 +55,7 @@ fi
 
 cd $THIS_DIR/x264
 git checkout my_compile || git checkout -b my_compile $X264_VERSION
+git reset --hard $X264_VERSION
 
 cd $THIS_DIR/ffmpeg
 # git checkout 2.8.6 || git checkout -b 2.8.6 n2.8.6

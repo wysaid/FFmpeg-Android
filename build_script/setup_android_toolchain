@@ -16,9 +16,10 @@ if [[ -z "$NDK" ]]; then
     exit 1
 fi
 
-export STANDALONE_TOOL="$NDK/build/tools/make-standalone-toolchain.sh"
+export STANDALONE_TOOL="$NDK/build/tools/make_standalone_toolchain.py"
 
-if [[ -f "$STANDALONE_TOOL" ]]; then
+if [[ ! -f "$STANDALONE_TOOL" ]]; then
+    export STANDALONE_TOOL="$NDK/build/tools/make-standalone-toolchain.sh"
 
     if [[ ! -d "$NDK_TOOLCHAIN_DIR/arm" ]]; then
         "$STANDALONE_TOOL" --arch=arm --toolchain=arm-linux-android-clang3.6 --platform=android-22 --install-dir=$NDK_TOOLCHAIN_DIR/arm --stl=libc++

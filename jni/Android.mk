@@ -66,25 +66,20 @@ include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE:= libx264_static
 LOCAL_SRC_FILES:= $(X264_DIR)/libx264.a
-# LOCAL_CFLAGS := -march=armv7-a -mfloat-abi=softfp -mfpu=neon -O3 -ffast-math -funroll-loops
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := ffmpeg
-LOCAL_SRC_FILES := decoder.c encoder.c
-LOCAL_LDLIBS := -llog -lz -fPIC -fPIE
+
+LOCAL_CFLAGS := -fPIC -O3
+LOCAL_LDLIBS := -llog -lz -Wl,-Bsymbolic -fPIC -fPIE
 
 ifeq ($(TARGET_ARCH_ABI), x86)
-LOCAL_LDLIBS:= $(LOCAL_LDLIBS) -Wl,--no-warn-shared-textrel
+LOCAL_LDLIBS := $(LOCAL_LDLIBS) -z notext
 endif
 
-ifeq ($(TARGET_ARCH_ABI), x86_64)
-LOCAL_LDLIBS:= $(LOCAL_LDLIBS) -Wl,-Bsymbolic
-endif
-
-LOCAL_CFLAGS := -fPIC -mfloat-abi=softfp -mfpu=neon -O3 -ffast-math -funroll-loops
 LOCAL_WHOLE_STATIC_LIBRARIES := libavformat_static \
 						libavcodec_static \
 						libavutil_static \
