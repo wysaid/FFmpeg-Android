@@ -50,7 +50,6 @@ echo ./configure \
     --disable-ffplay \
     --disable-ffmpeg \
     --disable-ffprobe \
-    --disable-ffserver \
     --disable-avdevice \
     --disable-bsfs \
     --disable-devices \
@@ -117,7 +116,6 @@ echo ./configure \
     --disable-ffplay \
     --disable-ffmpeg \
     --disable-ffprobe \
-    --disable-ffserver \
     --disable-avdevice \
     --disable-bsfs \
     --disable-devices \

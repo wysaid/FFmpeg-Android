@@ -9,7 +9,7 @@
     - x264: 5db6aa6cab1b146e07b60cc1736a01f21da01154
 
 3. tested-version 3:
-    - ffmpeg tag: n5.1.4
+    - ffmpeg tag: n4.4.4
     - x264: 7ed753b10a61d0be95f683289dfb925b800b0676
 
 ## Build
