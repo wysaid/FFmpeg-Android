@@ -11,6 +11,27 @@ THIS_DIR=$(
 echo "THIS_DIR=$THIS_DIR"
 cd $THIS_DIR
 
+export FFMPEG_VERSION=3.4.8
+export X264_VERSION=5db6aa6cab1b146e07b60cc1736a01f21da01154
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -f | --ffmpeg)
+        shift
+        FFMPEG_VERSION=$1
+        ;;
+    -x | --x264)
+        shift
+        X264_VERSION=$1
+        ;;
+    *)
+        echo "Unknown parameter passed: $1"
+        exit 1
+        ;;
+    esac
+    shift
+done
+
 export PREFIX=$(pwd)/build
 export SONAME=libffmpeg.so
 
@@ -33,11 +54,11 @@ if [[ ! -d "${THIS_DIR}/ffmpeg" ]]; then
 fi
 
 cd $THIS_DIR/x264
-git checkout my_compile || git checkout -b my_compile 5db6aa6cab1b146e07b60cc1736a01f21da01154
+git checkout my_compile || git checkout -b my_compile $X264_VERSION
 
 cd $THIS_DIR/ffmpeg
 # git checkout 2.8.6 || git checkout -b 2.8.6 n2.8.6
-git checkout 3.4.8 || git checkout -b 3.4.8 n3.4.8
+git checkout ${FFMPEG_VERSION} || git checkout -b ${FFMPEG_VERSION} n${FFMPEG_VERSION}
 
 if ! bash $THIS_DIR/build_script/setup_android_toolchain; then
     echo "setup android_toolchain failed"
