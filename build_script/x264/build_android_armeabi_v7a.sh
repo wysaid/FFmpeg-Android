@@ -7,6 +7,7 @@ pwd
 git clean -fd
 
 set -e
+set -x
 
 export NDK_STANDALONE_TOOLCHAIN=$NDK_TOOLCHAIN_DIR/arm
 
@@ -16,28 +17,33 @@ if [[ ! -d "${NDK_STANDALONE_TOOLCHAIN}" ]]; then
     exit 1
 fi
 
+if [[ -f "$NDK_STANDALONE_TOOLCHAIN/bin/llvm-strings" ]]; then
+    export STRINGS="$NDK_STANDALONE_TOOLCHAIN/bin/llvm-strings"
+fi
+
+# Disable strip to avoid issues with symbols
+export STRIP=true
+export AR="$NDK_STANDALONE_TOOLCHAIN/bin/llvm-ar"
+export RANLIB="$NDK_STANDALONE_TOOLCHAIN/bin/llvm-ranlib"
 export SYSROOT=$NDK_STANDALONE_TOOLCHAIN/sysroot
 export CROSS_PREFIX=$NDK_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-
 
 TEMP_PREFIX=${PREFIX}/x264/armeabi-v7a
-# rm -rf $TEMP_PREFIX
-mkdir -p $TEMP_PREFIX
+BUILD_DIR=${PREFIX}/x264/armeabi-v7a-build
 
-echo ./configure \
+mkdir -p "$TEMP_PREFIX"
+mkdir -p "$BUILD_DIR"
+
+cd "$BUILD_DIR"
+
+$1/configure \
     --prefix=${TEMP_PREFIX} \
     --enable-static \
     --enable-pic \
     --host=arm-linux \
     --cross-prefix=$CROSS_PREFIX \
-    --sysroot=$SYSROOT
-
-./configure \
-    --prefix=${TEMP_PREFIX} \
-    --enable-static \
-    --enable-pic \
-    --host=arm-linux \
-    --cross-prefix=$CROSS_PREFIX \
-    --sysroot=$SYSROOT
+    --sysroot=$SYSROOT \
+    --extra-cflags="-std=c99 -D_POSIX_C_SOURCE=200112L -Wno-implicit-function-declaration"
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)

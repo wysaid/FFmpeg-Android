@@ -1,7 +1,6 @@
 build/
 .idea/
 tmp/
-*-build-*
 jni/
 obj/
 libs/

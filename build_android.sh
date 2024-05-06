@@ -14,8 +14,8 @@ THIS_DIR=$(
 echo "THIS_DIR=$THIS_DIR"
 cd $THIS_DIR
 
-export FFMPEG_VERSION=3.4.8
-export X264_VERSION=5db6aa6cab1b146e07b60cc1736a01f21da01154
+export FFMPEG_VERSION=4.4.4
+export X264_VERSION=31e19f92f00c7003fa115047ce50978bc98c3a0d
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -41,7 +41,6 @@ export SONAME=libffmpeg.so
 echo NDK=${NDK}
 echo PREFIX=${PREFIX}
 
-rm -rf "$PREFIX"
 mkdir -p "$PREFIX"
 
 if [[ ! -d "${THIS_DIR}/x264" ]]; then
@@ -57,12 +56,16 @@ if [[ ! -d "${THIS_DIR}/ffmpeg" ]]; then
 fi
 
 cd $THIS_DIR/x264
+git stash
 git checkout my_compile || git checkout -b my_compile $X264_VERSION
-git reset --hard $X264_VERSION
+git reset --hard $X264_VERSION || (git fetch --all && git reset --hard $X264_VERSION)
 
 cd $THIS_DIR/ffmpeg
-# git checkout 2.8.6 || git checkout -b 2.8.6 n2.8.6
-git checkout ${FFMPEG_VERSION} || git checkout -b ${FFMPEG_VERSION} n${FFMPEG_VERSION}
+git stash
+if ! (git checkout ${FFMPEG_VERSION} || git checkout -b ${FFMPEG_VERSION} n${FFMPEG_VERSION}); then
+    git fetch --all
+    git checkout ${FFMPEG_VERSION} || git checkout -b ${FFMPEG_VERSION} n${FFMPEG_VERSION}
+fi
 
 if ! bash $THIS_DIR/build_script/setup_android_toolchain; then
     echo "setup android_toolchain failed"
@@ -71,6 +74,7 @@ fi
 export NDK_TOOLCHAIN_DIR=$THIS_DIR/build_script/ndk-build-toolchain
 
 cd $THIS_DIR
+bash fix_ffmpeg.sh
 
 echo "### build x264 start ###"
 
