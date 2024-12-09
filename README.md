@@ -15,6 +15,7 @@ Support building FFmpeg for Android with x264.
 
 - Install git
 - Install Android NDK (tested with ndk20、ndk21、ndk22、ndk26), __do not use `NDK23`!__
+  - Tested with all NDK versions on `macOS with Intel chips` and `Ubuntu 20.04+`
   - Tested with `NDK26` on macOS with Apple chips
 - Install yasm, nasm (via `brew install nasm yasm` or `apt install nasm yasm -y`...)
 
