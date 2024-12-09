@@ -18,6 +18,16 @@ fi
 export SYSROOT=$NDK_STANDALONE_TOOLCHAIN/sysroot
 export CROSS_PREFIX=$NDK_STANDALONE_TOOLCHAIN/bin/x86_64-linux-android-
 
+if [[ ! -f "${CROSS_PREFIX}strings" ]]; then
+    if [[ -f "$NDK_STANDALONE_TOOLCHAIN/bin/llvm-strings" ]]; then
+        export STRINGS=$NDK_STANDALONE_TOOLCHAIN/bin/llvm-strings
+        echo "llvm-strings found: $STRINGS"
+    else
+        echo "llvm-strings not found, using strings"
+        export STRINGS=strings
+    fi
+fi
+
 TEMP_PREFIX=${PREFIX}/x264/x86_64
 # rm -rf $TEMP_PREFIX
 mkdir -p $TEMP_PREFIX
