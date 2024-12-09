@@ -46,13 +46,13 @@ mkdir -p "$PREFIX"
 
 if [[ ! -d "${THIS_DIR}/x264" ]]; then
     echo "cloning x264..."
-    git clone https://code.videolan.org/videolan/x264.git --recursive
+    git clone https://github.com/mirror/x264.git --recursive
 
 fi
 
 if [[ ! -d "${THIS_DIR}/ffmpeg" ]]; then
     echo "cloning ffmpeg..."
-    git clone git://source.ffmpeg.org/ffmpeg.git ffmpeg --recursive
+    git clone https://github.com/FFmpeg/FFmpeg ffmpeg --recursive
 
 fi
 
