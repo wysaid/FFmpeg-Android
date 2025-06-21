@@ -57,7 +57,7 @@ export TOOLCHAIN=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64
 export SYSROOT=$TOOLCHAIN/sysroot
 
 # 创建pthread_atfork stub库
-cat > pthread_atfork_stub.c << 'EOF'
+cat >pthread_atfork_stub.c <<'EOF'
 // Stub implementation for pthread_atfork
 int pthread_atfork(void (*prepare)(void), void (*parent)(void), void (*child)(void)) {
     return 0;

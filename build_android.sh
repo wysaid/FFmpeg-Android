@@ -70,7 +70,6 @@ export ANDROID_NDK=$NDK
 cd $THIS_DIR
 
 echo "### build x264 start ###"
-
 bash $THIS_DIR/build_script/x264/build_android_all_new.sh "$THIS_DIR/x264"
 echo "### build x264 end ###"
 
@@ -79,6 +78,24 @@ bash $THIS_DIR/build_script/ffmpeg/build_android_all_new.sh "$THIS_DIR/ffmpeg"
 echo "### build ffmpeg end ###"
 
 echo "### gen ffmpeg.so ###"
-cp -rf $PREFIX/ffmpeg/armeabi-v7a/include/* $THIS_DIR/jni/
+# 检查是否至少有一个架构构建成功
+BUILT_ARCHS=()
+for arch in armeabi-v7a arm64-v8a x86_64; do
+    if [[ -f "$PREFIX/ffmpeg/$arch/lib/libavcodec.a" ]]; then
+        BUILT_ARCHS+=("$arch")
+        echo "Found FFmpeg libraries for $arch"
+    fi
+done
+
+if [[ ${#BUILT_ARCHS[@]} -eq 0 ]]; then
+    echo "Error: No FFmpeg libraries found. Build failed."
+    exit 1
+fi
+
+# 使用第一个成功构建的架构的头文件
+FIRST_ARCH=${BUILT_ARCHS[0]}
+echo "Using headers from $FIRST_ARCH architecture"
+cp -rf $PREFIX/ffmpeg/$FIRST_ARCH/include/* $THIS_DIR/jni/
+
 cd $THIS_DIR/jni
 $NDK/ndk-build -j$(getconf _NPROCESSORS_ONLN)

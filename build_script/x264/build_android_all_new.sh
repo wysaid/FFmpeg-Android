@@ -37,17 +37,17 @@ for arch in "${ARCHITECTURES[@]}"; do
     echo "========================================="
     echo "Building x264 for architecture: $arch"
     echo "========================================="
-    
+
     # 检查是否已经构建过
     INSTALL_DIR="$BUILD_ROOT/x264/$arch"
     if [[ -f "$INSTALL_DIR/lib/libx264.a" && -f "$INSTALL_DIR/include/x264.h" ]]; then
         echo "x264 for $arch already built, skipping..."
         continue
     fi
-    
+
     # 调用单架构构建脚本
     bash "$THIS_DIR/build_android_${arch}_new.sh" "$X264_SOURCE_DIR" "$BUILD_ROOT"
-    
+
     echo "x264 $arch build completed successfully"
 done
 
