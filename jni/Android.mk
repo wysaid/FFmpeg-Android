@@ -75,6 +75,7 @@ LOCAL_MODULE := ffmpeg
 
 LOCAL_CFLAGS := -fPIC -O3 -DANDROID -D__ANDROID_API__=21
 LOCAL_LDLIBS := -llog -lz -lm -ldl -lc
+LOCAL_LDFLAGS := -Wl,--allow-multiple-definition
 
 ifeq ($(TARGET_ARCH_ABI), x86_64)
 LOCAL_LDLIBS := $(LOCAL_LDLIBS) -z notext
