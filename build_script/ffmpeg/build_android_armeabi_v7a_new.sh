@@ -2,16 +2,50 @@
 
 set -e
 
-cd $1
-echo "Building FFmpeg for armeabi-v7a, param = $1"
-pwd
+if [[ -z "$1" || -z "$2" ]]; then
+    echo "Usage: $0 <FFMPEG_SOURCE_DIR> <BUILD_ROOT>"
+    exit 1
+fi
 
-git clean -fdx
+FFMPEG_SOURCE_DIR=$1
+BUILD_ROOT=$2
+ARCH=armeabi-v7a
+
+echo "Building FFmpeg for $ARCH"
+echo "Source: $FFMPEG_SOURCE_DIR"
+echo "Build root: $BUILD_ROOT"
 
 if [[ -z "$ANDROID_NDK" ]]; then
     echo "ANDROID_NDK environment variable not set"
     exit 1
 fi
+
+# 创建架构特定的构建目录
+BUILD_DIR="$BUILD_ROOT/ffmpeg-build/$ARCH"
+INSTALL_DIR="$BUILD_ROOT/ffmpeg/$ARCH"
+X264_PREFIX="$BUILD_ROOT/x264/$ARCH"
+
+echo "Build directory: $BUILD_DIR"
+echo "Install directory: $INSTALL_DIR"
+echo "x264 prefix: $X264_PREFIX"
+
+# 确保x264已经构建
+if [[ ! -f "$X264_PREFIX/lib/libx264.a" ]]; then
+    echo "Error: x264 for $ARCH not found. Please build x264 first."
+    exit 1
+fi
+
+# 清理并创建构建目录
+rm -rf "$BUILD_DIR"
+mkdir -p "$BUILD_DIR"
+mkdir -p "$INSTALL_DIR"
+
+# 复制源码到构建目录
+echo "Copying source files..."
+cp -r "$FFMPEG_SOURCE_DIR"/* "$BUILD_DIR/"
+
+# 进入构建目录
+cd "$BUILD_DIR"
 
 # 设置目标架构和API级别
 export TARGET_ARCH=arm
@@ -22,8 +56,37 @@ export MIN_SDK_VERSION=21
 export TOOLCHAIN=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64
 export SYSROOT=$TOOLCHAIN/sysroot
 
+# 创建编译器包装脚本在当前构建目录中
+cat > clang_wrapper.sh << 'EOF'
+#!/bin/bash
+# 编译器包装器 - 过滤掉有问题的编译器标志
+REAL_CC="/usr/lib/android-sdk/ndk/26.3.11579264/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang"
+# 过滤掉有问题的标志
+FILTERED_ARGS=()
+for arg in "$@"; do
+    if [[ "$arg" != "-mfp16-format=ieee" && "$arg" != "-mfpu=neon-fp16" ]]; then
+        FILTERED_ARGS+=("$arg")
+    fi
+done
+# 调用真实的编译器
+exec "$REAL_CC" "${FILTERED_ARGS[@]}"
+EOF
+chmod +x clang_wrapper.sh
+
+# 创建pthread_atfork stub库
+cat > pthread_atfork_stub.c << 'EOF'
+// Stub implementation for pthread_atfork
+int pthread_atfork(void (*prepare)(void), void (*parent)(void), void (*child)(void)) {
+    return 0;
+}
+EOF
+
+# 编译stub库
+$TOOLCHAIN/bin/armv7a-linux-androideabi${MIN_SDK_VERSION}-clang -c -o pthread_atfork_stub.o pthread_atfork_stub.c
+$TOOLCHAIN/bin/llvm-ar rcs libpthread_stub.a pthread_atfork_stub.o
+
 # 设置编译器
-export CC=/data/work/FFmpeg-Android/build_script/ffmpeg/clang_wrapper.sh
+export CC="$BUILD_DIR/clang_wrapper.sh"
 export CXX=$TOOLCHAIN/bin/armv7a-linux-androideabi${MIN_SDK_VERSION}-clang++
 export AR=$TOOLCHAIN/bin/llvm-ar
 export RANLIB=$TOOLCHAIN/bin/llvm-ranlib
@@ -39,14 +102,9 @@ export CPPFLAGS="$CFLAGS"
 export LDFLAGS="-Wl,-rpath-link=$SYSROOT/usr/lib/arm-linux-androideabi -L$SYSROOT/usr/lib/arm-linux-androideabi"
 
 # x264路径
-X264_PREFIX=${PREFIX}/x264/armeabi-v7a
 export PKG_CONFIG_PATH=${X264_PREFIX}/lib/pkgconfig:$PKG_CONFIG_PATH
 
-TEMP_PREFIX=${PREFIX}/ffmpeg/armeabi-v7a
-rm -rf $TEMP_PREFIX
-mkdir -p $TEMP_PREFIX
-
-echo "Configuring FFmpeg for armeabi-v7a..."
+echo "Configuring FFmpeg for $ARCH..."
 
 # 设置环境变量来避免自动检测有问题的特性
 export ac_cv_func_pthread_atfork=no
@@ -56,7 +114,7 @@ export ac_cv_func_pthread_cancel=no
     --target-os=android \
     --arch=arm \
     --cpu=armv7-a \
-    --prefix=${TEMP_PREFIX} \
+    --prefix="$INSTALL_DIR" \
     --enable-cross-compile \
     --cc=$CC \
     --cxx=$CXX \
@@ -66,7 +124,7 @@ export ac_cv_func_pthread_cancel=no
     --nm=$NM \
     --sysroot=$SYSROOT \
     --extra-cflags="$CFLAGS -I${X264_PREFIX}/include" \
-    --extra-ldflags="$LDFLAGS -L${X264_PREFIX}/lib -L/data/work/FFmpeg-Android/build_script/ffmpeg" \
+    --extra-ldflags="$LDFLAGS -L${X264_PREFIX}/lib -L$BUILD_DIR" \
     --extra-libs="-lx264 -lpthread_stub" \
     --pkg-config-flags="--static" \
     --disable-pthreads \
@@ -123,12 +181,10 @@ export ac_cv_func_pthread_cancel=no
     --enable-optimizations \
     --disable-runtime-cpudetect
 
-# 修复configure生成的配置文件
-../build_script/ffmpeg/fix_config.sh
-
-echo "Building FFmpeg for armeabi-v7a..."
+echo "Building FFmpeg for $ARCH..."
 make clean
 make -j$(nproc)
 make install
 
-echo "FFmpeg armeabi-v7a build completed"
+echo "FFmpeg $ARCH build completed successfully"
+echo "Libraries installed to: $INSTALL_DIR"
