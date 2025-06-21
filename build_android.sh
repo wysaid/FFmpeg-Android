@@ -18,6 +18,8 @@ cd $THIS_DIR
 export FFMPEG_VERSION=6.1.1
 export X264_VERSION=31e19f92f00c7003fa115047ce50978bc98c3a0d
 
+CLEAR_BUILD=false
+
 while [[ $# -gt 0 ]]; do
     case $1 in
     -f | --ffmpeg)
@@ -28,8 +30,13 @@ while [[ $# -gt 0 ]]; do
         shift
         export X264_VERSION=$1
         ;;
+    --clear)
+        CLEAR_BUILD=true
+        ;;
     *)
         echo "Unknown parameter passed: $1"
+        echo "Usage: $0 [--clear] [-f|--ffmpeg VERSION] [-x|--x264 VERSION]"
+        echo "  --clear: Clean build directories before building"
         exit 1
         ;;
     esac
@@ -41,8 +48,13 @@ export SONAME=libffmpeg.so
 
 echo NDK=${NDK}
 echo PREFIX=${PREFIX}
+echo CLEAR_BUILD=${CLEAR_BUILD}
 
-rm -rf "$PREFIX"
+# 只有在 --clear 标志时才清理构建目录
+if [[ "$CLEAR_BUILD" == "true" ]]; then
+    echo "Clearing build directory..."
+    rm -rf "$PREFIX"
+fi
 mkdir -p "$PREFIX"
 
 if [[ ! -d "${THIS_DIR}/x264" ]]; then
@@ -70,11 +82,11 @@ export ANDROID_NDK=$NDK
 cd $THIS_DIR
 
 echo "### build x264 start ###"
-bash $THIS_DIR/build_script/x264/build_android_all_new.sh "$THIS_DIR/x264"
+bash $THIS_DIR/build_script/x264/build_android_all_new.sh "$THIS_DIR/x264" "$CLEAR_BUILD"
 echo "### build x264 end ###"
 
 echo "### build ffmpeg start ###"
-bash $THIS_DIR/build_script/ffmpeg/build_android_all_new.sh "$THIS_DIR/ffmpeg"
+bash $THIS_DIR/build_script/ffmpeg/build_android_all_new.sh "$THIS_DIR/ffmpeg" "$CLEAR_BUILD"
 echo "### build ffmpeg end ###"
 
 echo "### gen ffmpeg.so ###"

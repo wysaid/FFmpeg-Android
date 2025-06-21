@@ -3,7 +3,7 @@
 set -e
 
 if [[ -z "$1" ]]; then
-    echo "Invalid argument! Usage: $0 <X264_SOURCE_DIR>"
+    echo "Invalid argument! Usage: $0 <X264_SOURCE_DIR> [CLEAR_BUILD]"
     exit 1
 fi
 
@@ -13,12 +13,14 @@ THIS_DIR=$(
 )
 
 X264_SOURCE_DIR=$1
+CLEAR_BUILD=${2:-false}
 WORKSPACE_ROOT=$(cd "$THIS_DIR/../.." && pwd)
 BUILD_ROOT="$WORKSPACE_ROOT/build"
 
 echo "THIS_DIR=$THIS_DIR"
 echo "X264_SOURCE_DIR=$X264_SOURCE_DIR"
 echo "BUILD_ROOT=$BUILD_ROOT"
+echo "CLEAR_BUILD=$CLEAR_BUILD"
 
 # 确保源码目录存在
 if [[ ! -d "$X264_SOURCE_DIR" ]]; then
@@ -46,7 +48,7 @@ for arch in "${ARCHITECTURES[@]}"; do
     fi
 
     # 调用单架构构建脚本
-    bash "$THIS_DIR/build_android_${arch}_new.sh" "$X264_SOURCE_DIR" "$BUILD_ROOT"
+    bash "$THIS_DIR/build_android_${arch}_new.sh" "$X264_SOURCE_DIR" "$BUILD_ROOT" "$CLEAR_BUILD"
 
     echo "x264 $arch build completed successfully"
 done
