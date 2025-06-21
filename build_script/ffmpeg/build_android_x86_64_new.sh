@@ -86,10 +86,12 @@ export NM=$TOOLCHAIN/bin/llvm-nm
 # 设置交叉编译前缀
 export CROSS_PREFIX=$TOOLCHAIN/bin/llvm-
 
-# 设置编译选项
+# 设置编译选项，确保PIC兼容，特别针对x86_64汇编
 export CFLAGS="-fPIC -DANDROID -D__ANDROID_API__=${MIN_SDK_VERSION} -D_POSIX_C_SOURCE=200112L -D_GNU_SOURCE"
 export CPPFLAGS="$CFLAGS"
-export LDFLAGS=""
+export LDFLAGS="-Wl,-z,notext"
+# 为汇编代码添加PIC标志
+export ASFLAGS="-fPIC"
 
 # 创建 pthread_atfork stub
 cat >pthread_stub.c <<'EOF'
@@ -130,6 +132,7 @@ if [[ "$CONFIGURE_DONE" == "false" ]]; then
         --extra-cflags="$CFLAGS -I${X264_PREFIX}/include" \
         --extra-ldflags="$LDFLAGS -L${X264_PREFIX}/lib -L$BUILD_DIR" \
         --extra-libs="-lx264 -lpthread_stub" \
+        --as="$CC" \
         --pkg-config-flags="--static" \
         --disable-pthreads \
         --disable-w32threads \

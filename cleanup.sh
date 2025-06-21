@@ -8,7 +8,7 @@ THIS_DIR=$(
 cd $THIS_DIR
 echo "Cleaning up the build environment..."
 
-git clean -ffdx --exclude ffmpeg --exclude x264
+git clean -fdx
 if [[ -d ffmpeg ]]; then
     cd ffmpeg
     git clean -ffdx

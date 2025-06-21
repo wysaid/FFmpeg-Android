@@ -97,10 +97,12 @@ export NM=$TOOLCHAIN/bin/llvm-nm
 # 设置交叉编译前缀
 export CROSS_PREFIX=$TOOLCHAIN/bin/aarch64-linux-android-
 
-# 优化编译选项，启用NEON，避免problematic检测
+# 优化编译选项，启用NEON，确保PIC兼容
 export CFLAGS="-Os -fPIC -DANDROID -D__ANDROID_API__=${MIN_SDK_VERSION} -march=armv8-a -ffast-math -fomit-frame-pointer -DHAVE_PTHREAD_CANCEL=0 -D_GNU_SOURCE"
 export CPPFLAGS="$CFLAGS"
 export LDFLAGS="-Wl,-rpath-link=$SYSROOT/usr/lib/aarch64-linux-android -L$SYSROOT/usr/lib/aarch64-linux-android"
+# 为汇编代码添加PIC标志
+export ASFLAGS="-fPIC"
 
 # x264路径
 export PKG_CONFIG_PATH=${X264_PREFIX}/lib/pkgconfig:$PKG_CONFIG_PATH
@@ -128,6 +130,7 @@ if [[ "$CONFIGURE_DONE" == "false" ]]; then
         --extra-cflags="$CFLAGS -I${X264_PREFIX}/include" \
         --extra-ldflags="$LDFLAGS -L${X264_PREFIX}/lib -L$BUILD_DIR" \
         --extra-libs="-lx264 -lpthread_stub" \
+        --as="$CC" \
         --pkg-config-flags="--static" \
         --disable-pthreads \
         --disable-w32threads \
