@@ -73,8 +73,12 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := ffmpeg
 
-LOCAL_CFLAGS := -fPIC -O3
-LOCAL_LDLIBS := -llog -lz -Wl,-Bsymbolic -fPIC -fPIE
+LOCAL_CFLAGS := -fPIC -O3 -DANDROID -D__ANDROID_API__=21
+LOCAL_LDLIBS := -llog -lz -lm -ldl -lc
+
+ifeq ($(TARGET_ARCH_ABI), x86_64)
+LOCAL_LDLIBS := $(LOCAL_LDLIBS) -z notext
+endif
 
 ifeq ($(TARGET_ARCH_ABI), x86)
 LOCAL_LDLIBS := $(LOCAL_LDLIBS) -z notext

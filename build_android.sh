@@ -14,8 +14,9 @@ THIS_DIR=$(
 echo "THIS_DIR=$THIS_DIR"
 cd $THIS_DIR
 
-export FFMPEG_VERSION=3.4.8
-export X264_VERSION=5db6aa6cab1b146e07b60cc1736a01f21da01154
+# 更新到最新版本
+export FFMPEG_VERSION=6.1.1
+export X264_VERSION=31e19f92f00c7003fa115047ce50978bc98c3a0d
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -61,24 +62,20 @@ git checkout my_compile || git checkout -b my_compile $X264_VERSION
 git reset --hard $X264_VERSION
 
 cd $THIS_DIR/ffmpeg
-# git checkout 2.8.6 || git checkout -b 2.8.6 n2.8.6
 git checkout ${FFMPEG_VERSION} || git checkout -b ${FFMPEG_VERSION} n${FFMPEG_VERSION}
 
-if ! bash $THIS_DIR/build_script/setup_android_toolchain; then
-    echo "setup android_toolchain failed"
-    exit 1
-fi
-export NDK_TOOLCHAIN_DIR=$THIS_DIR/build_script/ndk-build-toolchain
+# 现代NDK不再需要standalone toolchain
+export ANDROID_NDK=$NDK
 
 cd $THIS_DIR
 
 echo "### build x264 start ###"
 
-bash $THIS_DIR/build_script/x264/build_android_all.sh "$THIS_DIR/x264"
+bash $THIS_DIR/build_script/x264/build_android_all_new.sh "$THIS_DIR/x264"
 echo "### build x264 end ###"
 
 echo "### build ffmpeg start ###"
-bash $THIS_DIR/build_script/ffmpeg/build_android_all.sh "$THIS_DIR/ffmpeg"
+bash $THIS_DIR/build_script/ffmpeg/build_android_all_new.sh "$THIS_DIR/ffmpeg"
 echo "### build ffmpeg end ###"
 
 echo "### gen ffmpeg.so ###"
