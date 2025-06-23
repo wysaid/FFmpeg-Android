@@ -43,6 +43,10 @@ cd "$BUILD_DIR"
 
 export PATH=$NDK_STANDALONE_TOOLCHAIN/bin:$PATH/
 
+if grep -q "disable-vulkan" $1/configure; then
+    export DISABLE_VULKAN="--disable-vulkan"
+fi
+
 $1/configure \
     --target-os=linux \
     --prefix=${TEMP_PREFIX} \
@@ -108,7 +112,7 @@ $1/configure \
     --enable-neon \
     --disable-filters \
     --enable-yasm \
-    --disable-vulkan
+    ${DISABLE_VULKAN}
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)
