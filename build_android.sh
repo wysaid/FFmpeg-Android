@@ -28,6 +28,9 @@ while [[ $# -gt 0 ]]; do
         shift
         export X264_VERSION=$1
         ;;
+    --16kb | --enable-16kb-page-size)
+        export ENABLE_16KB_PAGE_SIZE=true
+        ;;
     *)
         echo "Unknown parameter passed: $1"
         exit 1

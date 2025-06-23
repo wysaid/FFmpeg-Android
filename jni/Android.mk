@@ -76,6 +76,11 @@ LOCAL_MODULE := ffmpeg
 LOCAL_CFLAGS := -fPIC -O3
 LOCAL_LDLIBS := -llog -lz -Wl,-Bsymbolic -fPIC -fPIE
 
+ifeq ($(ENABLE_16KB_PAGE_SIZE),true)
+LOCAL_LDFLAGS += "-Wl,-z,max-page-size=16384"
+endif
+
+
 ifeq ($(TARGET_ARCH_ABI), x86)
 LOCAL_LDLIBS := $(LOCAL_LDLIBS) -z notext
 endif
