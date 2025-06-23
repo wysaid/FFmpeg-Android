@@ -29,14 +29,20 @@ MODULES="\
 --enable-libx264"
 
 export PKG_CONFIG_PATH=${PREFIX}/x264/armeabi-v7a/lib/pkgconfig:$PKG_CONFIG_PATH
-echo PKG_CONFIG_PATH=$PKG_CONFIG_PATH
 TEMP_PREFIX=${PREFIX}/ffmpeg/armeabi-v7a
-BUILD_DIR=${PREFIX}/ffmpeg/armeabi-v7a-build
+BUILD_DIR=${TEMP_PREFIX}-build
+
+if [[ -s "$TEMP_PREFIX/lib/libavcodec.a" ]]; then
+    echo "### ffmpeg already built for Android ARMv7-a, skipping build"
+    exit 0
+fi
 
 mkdir -p $BUILD_DIR
+cd "$BUILD_DIR"
+
 export PATH=$NDK_STANDALONE_TOOLCHAIN/bin:$PATH/
 
-./configure \
+$1/configure \
     --target-os=linux \
     --prefix=${TEMP_PREFIX} \
     --tempprefix=${BUILD_DIR}/tmp \

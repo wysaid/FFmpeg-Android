@@ -30,13 +30,19 @@ MODULES="\
 
 export PKG_CONFIG_PATH=${PREFIX}/x264/arm64-v8a/lib/pkgconfig:$PKG_CONFIG_PATH
 TEMP_PREFIX=${PREFIX}/ffmpeg/arm64-v8a
-BUILD_DIR=${PREFIX}/ffmpeg/arm64-v8a-build
+BUILD_DIR=${TEMP_PREFIX}-build
+
+if [[ -s "$TEMP_PREFIX/lib/libavcodec.a" ]]; then
+    echo "### ffmpeg already built for Android ARM64, skipping build"
+    exit 0
+fi
 
 mkdir -p $BUILD_DIR
+cd "$BUILD_DIR"
 
 export PATH=$NDK_STANDALONE_TOOLCHAIN/bin:$PATH/
 
-./configure \
+$1/configure \
     --target-os=linux \
     --prefix=${TEMP_PREFIX} \
     --tempprefix=${BUILD_DIR}/tmp \

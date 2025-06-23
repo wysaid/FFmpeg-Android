@@ -29,7 +29,12 @@ export SYSROOT=$NDK_STANDALONE_TOOLCHAIN/sysroot
 export CROSS_PREFIX=$NDK_STANDALONE_TOOLCHAIN/bin/arm-linux-androideabi-
 
 TEMP_PREFIX=${PREFIX}/x264/armeabi-v7a
-BUILD_DIR=${PREFIX}/x264/armeabi-v7a-build
+BUILD_DIR=${TEMP_PREFIX}-build
+
+if [[ -s "$TEMP_PREFIX/lib/libx264.a" ]]; then
+    echo "### x264 already built for Android ARM, skipping build"
+    exit 0
+fi
 
 mkdir -p "$TEMP_PREFIX"
 mkdir -p "$BUILD_DIR"

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+set -x
 
 if [[ -z "$NDK" ]]; then
     echo "NDK variable not set, please do 'export NDK=/path/of/ndk-bundle'"
@@ -46,25 +47,37 @@ mkdir -p "$PREFIX"
 if [[ ! -d "${THIS_DIR}/x264" ]]; then
     echo "cloning x264..."
     git clone https://github.com/mirror/x264.git --recursive
-
 fi
 
 if [[ ! -d "${THIS_DIR}/ffmpeg" ]]; then
     echo "cloning ffmpeg..."
     git clone https://github.com/FFmpeg/FFmpeg ffmpeg --recursive
-
 fi
 
 cd $THIS_DIR/x264
 git stash
+LAST_X264_COMMIT=$(git rev-parse HEAD | tr -d '\n')
 git checkout my_compile || git checkout -b my_compile $X264_VERSION
 git reset --hard $X264_VERSION || (git fetch --all && git reset --hard $X264_VERSION)
+if [[ "$LAST_X264_COMMIT" != "$(git rev-parse HEAD | tr -d '\n')" ]]; then
+    echo "x264 version changed to $X264_VERSION"
+    git clean -ffdx build/x264
+else
+    echo "x264 version is already $X264_VERSION"
+fi
 
 cd $THIS_DIR/ffmpeg
 git stash
+LAST_FFMPEG_COMMIT=$(git rev-parse HEAD | tr -d '\n')
 if ! (git checkout ${FFMPEG_VERSION} || git checkout -b ${FFMPEG_VERSION} n${FFMPEG_VERSION}); then
     git fetch --all
     git checkout ${FFMPEG_VERSION} || git checkout -b ${FFMPEG_VERSION} n${FFMPEG_VERSION}
+fi
+if [[ "$LAST_FFMPEG_COMMIT" != "$(git rev-parse HEAD | tr -d '\n')" ]]; then
+    echo "ffmpeg version changed to $FFMPEG_VERSION"
+    git clean -ffdx build/ffmpeg
+else
+    echo "ffmpeg version is already $FFMPEG_VERSION"
 fi
 
 if ! bash $THIS_DIR/build_script/setup_android_toolchain; then

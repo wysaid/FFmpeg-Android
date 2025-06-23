@@ -28,7 +28,12 @@ export SYSROOT=$NDK_STANDALONE_TOOLCHAIN/sysroot
 export CROSS_PREFIX=$NDK_STANDALONE_TOOLCHAIN/bin/x86_64-linux-android-
 
 TEMP_PREFIX=${PREFIX}/x264/x86_64
-BUILD_DIR=${PREFIX}/x264/x86_64-build
+BUILD_DIR=${TEMP_PREFIX}-build
+
+if [[ -s "$TEMP_PREFIX/lib/libx264.a" ]]; then
+    echo "### x264 already built for Android x86_64, skipping build"
+    exit 0
+fi
 
 mkdir -p "$TEMP_PREFIX"
 mkdir -p "$BUILD_DIR"
