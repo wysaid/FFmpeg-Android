@@ -108,6 +108,7 @@ $1/configure \
     --disable-filters \
     --enable-pic \
     --enable-yasm \
+    --disable-vulkan \
     --pkg-config-flags="--static"
 
 make clean

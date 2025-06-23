@@ -109,6 +109,7 @@ $1/configure \
     --enable-pic \
     --enable-yasm \
     --disable-armv5te \
+    --disable-vulkan \
     --pkg-config-flags="--static"
 
 make clean

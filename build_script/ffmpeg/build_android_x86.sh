@@ -107,7 +107,8 @@ $1/configure \
     --disable-doc \
     --enable-neon \
     --disable-filters \
-    --enable-yasm
+    --enable-yasm \
+    --disable-vulkan
 
 make clean
 make -j$(getconf _NPROCESSORS_ONLN)
