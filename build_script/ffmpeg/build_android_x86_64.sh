@@ -41,7 +41,7 @@ export PATH=$NDK_STANDALONE_TOOLCHAIN/bin:$PATH/
     --tempprefix=${BUILD_DIR}/tmp \
     ${GENERAL} \
     --sysroot=$SYSROOT \
-    --extra-cflags="-DANDROID -fPIC -fpic -O3 -ffunction-sections -funwind-tables -fstack-protector -fomit-frame-pointer -fstrict-aliasing -fasm -Wno-psabi -fno-short-enums -march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=generic" \
+    --extra-cflags="-DANDROID -fPIC -fpic -O3 -ffunction-sections -funwind-tables -fstack-protector -fomit-frame-pointer -fstrict-aliasing -fasm -Wno-psabi -fno-short-enums -march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=generic -Wno-incompatible-function-pointer-types" \
     --extra-ldflags="-Wl,-rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -lc -lm -ldl -llog -fPIC -fpic -fPIE" \
     --enable-zlib \
     --enable-static \
