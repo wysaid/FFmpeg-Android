@@ -4,11 +4,10 @@ Support building FFmpeg for Android with x264.
 
 | FFmpeg | x264 | Android NDK | Tested Platform |
 | ------ | ---- | ----------- | ------ |
-| 2.8.6 | 90a61ec76424778c050524f682a33f115024be96 | ndk20,ndk21,ndk22,ndk26 | MacOS/Ubuntu |
-| 3.4.8 | 5db6aa6cab1b146e07b60cc1736a01f21da01154 | ndk20,ndk21,ndk22,ndk26 | MacOS/Ubuntu |
-| 4.4.4 | 31e19f92f00c7003fa115047ce50978bc98c3a0d | ndk22,ndk26 | MacOS |
+| 4.4.4 | 31e19f92f00c7003fa115047ce50978bc98c3a0d | ndk22,ndk25,ndk26,ndk27,ndk28 | macOS/Ubuntu |
 | 5.0 | 31e19f92f00c7003fa115047ce50978bc98c3a0d | ndk22,ndk26 | MacOS |
 | 5.1 | 31e19f92f00c7003fa115047ce50978bc98c3a0d | ndk22,ndk26 | MacOS |
+| 6.1.1 | 31e19f92f00c7003fa115047ce50978bc98c3a0d | ndk22,ndk26 | MacOS |
 
 ## Build
 
