@@ -10,6 +10,10 @@ Support building FFmpeg for Android with x264.
 
 > For newer versions of FFmpeg, the configure script parameters have changed and require separate adaptation.
 
+## Build Options
+
+The packaging methods included in this repository aim to minimize the package size while ensuring performance, with asm and NEON enabled. For specific build options, refer to the build scripts in the `build_script` directory.
+
 ## Build
 
 ### Prepare
