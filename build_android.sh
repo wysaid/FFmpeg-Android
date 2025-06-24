@@ -108,8 +108,6 @@ $NDK/ndk-build -j$(getconf _NPROCESSORS_ONLN)
 
 cd $THIS_DIR
 
-bash print_elf.sh
-
 export INSTALL_DIR=$THIS_DIR/ffmpeg-$FFMPEG_VERSION
 if [[ "$ENABLE_16KB_PAGE_SIZE" == "true" ]]; then
     INSTALL_DIR+="-16kb"

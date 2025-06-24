@@ -5,8 +5,10 @@ if [[ ! -d "$NDK" ]]; then
     exit 1
 fi
 
-if [[ ! -f "$NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-readelf" ]]; then
-    echo "llvm-readelf not found in NDK toolchain"
+READ_ELF=$(find "$NDK" -iname "*readelf*" | head -n 1)
+
+if [[ ! -f "${READ_ELF}" ]]; then
+    echo "readelf not found in NDK toolchain"
     exit 1
 fi
 
@@ -15,7 +17,7 @@ cd $(dirname "$0")
 find libs -type f -name "*.so" | while read -r file; do
     if [[ -f "$file" ]]; then
         echo "Processing $file"
-        $NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-readelf -l "$file" | grep "LOAD"
+        "${READ_ELF}" -l "$file" | grep "LOAD"
     else
         echo "File not found: $file"
     fi
