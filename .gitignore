@@ -6,3 +6,4 @@ obj/
 libs/
 ffmpeg/
 x264/
+/ffmpeg-*

@@ -105,3 +105,42 @@ echo "### gen ffmpeg.so ###"
 cp -rf $PREFIX/ffmpeg/armeabi-v7a/include/* $THIS_DIR/jni/
 cd $THIS_DIR/jni
 $NDK/ndk-build -j$(getconf _NPROCESSORS_ONLN)
+
+cd $THIS_DIR
+
+bash print_elf.sh
+
+export INSTALL_DIR=$THIS_DIR/ffmpeg-$FFMPEG_VERSION
+if [[ "$ENABLE_16KB_PAGE_SIZE" == "true" ]]; then
+    INSTALL_DIR+="-16kb"
+fi
+
+if [[ -d "$INSTALL_DIR" ]]; then
+    rm -rf "$INSTALL_DIR"
+fi
+
+set +x
+
+mkdir -p $INSTALL_DIR/include
+echo "### copy include files ###"
+cp -rf "$THIS_DIR"/jni/lib* $INSTALL_DIR/include/.
+
+ALL_ARCHS=(armeabi-v7a arm64-v8a x86 x86_64)
+for ARCH in "${ALL_ARCHS[@]}"; do
+    # Copy the config.h
+    CONFIG_FILE="$THIS_DIR/build/ffmpeg/${ARCH}-build/config.h"
+    if [[ -f "$CONFIG_FILE" ]]; then
+        echo "Copying $CONFIG_FILE libraries..."
+        cp -rf "${CONFIG_FILE}" $INSTALL_DIR/include/config.${ARCH}.h
+    else
+        echo "Warning: $CONFIG_FILE does not exist, skipping."
+    fi
+done
+
+echo "### copy libs ###"
+mkdir -p $INSTALL_DIR/libs
+cp -rf $THIS_DIR/libs/* $INSTALL_DIR/libs/.
+
+find $INSTALL_DIR/libs/ -iname "libffmpeg.so"
+
+echo "Done! "
