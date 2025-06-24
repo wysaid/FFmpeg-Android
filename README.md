@@ -27,25 +27,25 @@ Support building FFmpeg for Android with x264.
 3. `$ cd jni && $NDK/ndk-build`
 4. The `libffmpeg.so` is in the folder `libs`
 
-### 经过测试的编译版本
+### Tested build versions
 
 ```bash
-# 编译 ffmpeg 3.4.8
+# Build ffmpeg 3.4.8
 ./build_android.sh --ffmpeg 3.4.8 --x264 31e19f92f00c7003fa115047ce50978bc98c3a0d
-# 编译 ffmpeg 3.4.8 + 16kb page size
+# Build ffmpeg 3.4.8 + 16kb page size
 ./build_android.sh --ffmpeg 3.4.8 --x264 31e19f92f00c7003fa115047ce50978bc98c3a0d --16kb
 ```
 
 ```bash
-# 编译 ffmpeg 4.4.4
+# Build ffmpeg 4.4.4
 ./build_android.sh --ffmpeg 4.4.4 --x264 31e19f92f00c7003fa115047ce50978bc98c3a0d
-# 编译 ffmpeg 4.4.4 + 16kb page size
+# Build ffmpeg 4.4.4 + 16kb page size
 ./build_android.sh --ffmpeg 4.4.4 --x264 31e19f92f00c7003fa115047ce50978bc98c3a0d --16kb
 ```
 
 ```bash
-# 编译 ffmpeg 5.0
+# Build ffmpeg 5.0
 ./build_android.sh --ffmpeg 5.0 --x264 31e19f92f00c7003fa115047ce50978bc98c3a0d
-# 编译 ffmpeg 5.0 + 16kb page size
+# Build ffmpeg 5.0 + 16kb page size
 ./build_android.sh --ffmpeg 5.0 --x264 31e19f92f00c7003fa115047ce50978bc98c3a0d --16kb
 ```
