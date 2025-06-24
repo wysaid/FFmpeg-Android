@@ -15,7 +15,7 @@ THIS_DIR=$(
 echo "THIS_DIR=$THIS_DIR"
 cd $THIS_DIR
 
-export FFMPEG_VERSION=4.4.4
+export FFMPEG_VERSION=3.4.8
 export X264_VERSION=31e19f92f00c7003fa115047ce50978bc98c3a0d
 
 while [[ $# -gt 0 ]]; do

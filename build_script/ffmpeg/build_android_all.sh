@@ -19,13 +19,25 @@ set -e
 set -x
 
 # Build arm64 v8a
-bash $THIS_DIR/build_android_arm64_v8a.sh "$FFMPEG_DIR"
+if ! bash $THIS_DIR/build_android_arm64_v8a.sh "$FFMPEG_DIR"; then
+    echo "Failed to build arm64 v8a"
+    exit 1
+fi
 
 # Build armv7a
-bash $THIS_DIR/build_android_armeabi_v7a.sh "$FFMPEG_DIR"
+if ! bash $THIS_DIR/build_android_armeabi_v7a.sh "$FFMPEG_DIR"; then
+    echo "Failed to build armv7a"
+    exit 1
+fi
 
 # Build x86_64
-bash $THIS_DIR/build_android_x86_64.sh "$FFMPEG_DIR"
+if ! bash $THIS_DIR/build_android_x86_64.sh "$FFMPEG_DIR"; then
+    echo "Failed to build x86_64"
+    exit 1
+fi
 
 # Build x86
-bash $THIS_DIR/build_android_x86.sh "$FFMPEG_DIR"
+if ! bash $THIS_DIR/build_android_x86.sh "$FFMPEG_DIR"; then
+    echo "Failed to build x86"
+    exit 1
+fi
