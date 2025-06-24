@@ -43,7 +43,7 @@ jobs:
       run: chmod +x build_android.sh
     
     - name: Build Android FFmpeg
-      run: ./build_android.sh && ./build_android.sh -16kb
+      run: ./build_android.sh && ./build_android.sh --16kb
     
     - name: Check build outputs
       id: check_outputs

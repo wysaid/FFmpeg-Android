@@ -135,6 +135,14 @@ for ARCH in "${ALL_ARCHS[@]}"; do
     fi
 done
 
+echo "#define FFMPEG_VERSION $FFMPEG_VERSION" >$INSTALL_DIR/version.h
+echo "#define X264_VERSION $X264_VERSION" >>$INSTALL_DIR/version.h
+if [[ "$ENABLE_16KB_PAGE_SIZE" == "true" ]]; then
+    echo "#define ENABLE_16KB_PAGE_SIZE true" >>$INSTALL_DIR/version.h
+else
+    echo "#define ENABLE_16KB_PAGE_SIZE false" >>$INSTALL_DIR/version.h
+fi
+
 echo "### copy libs ###"
 mkdir -p $INSTALL_DIR/libs
 cp -rf $THIS_DIR/libs/* $INSTALL_DIR/libs/.
