@@ -1,0 +1,84 @@
+name: Build Android FFmpeg
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+    
+    - name: Setup Android NDK
+      uses: nttld/setup-ndk@v1
+      with:
+        ndk-version: r26c
+        add-to-path: false
+    
+    - name: Set NDK environment variable
+      run: |
+        echo "NDK=$ANDROID_NDK_ROOT" >> $GITHUB_ENV
+        echo "Android NDK location: $ANDROID_NDK_ROOT"
+    
+    - name: Install build dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential git yasm nasm pkg-config
+    
+    - name: Make build script executable
+      run: chmod +x build_android.sh
+    
+    - name: Build Android FFmpeg
+      run: ./build_android.sh && ./build_android.sh -16kb
+    
+    - name: Check build outputs
+      id: check_outputs
+      run: |
+        echo "Checking for FFmpeg build outputs..."
+        ls -la ffmpeg-* || echo "No ffmpeg-* directories found"
+        
+        # Find standard build (without -16kb suffix)
+        STANDARD_BUILD=$(ls -d ffmpeg-* 2>/dev/null | grep -v "\-16kb$" | head -n1 || echo "")
+        SIXTEENKB_BUILD=$(ls -d ffmpeg-*-16kb 2>/dev/null | head -n1 || echo "")
+        
+        echo "standard_build=$STANDARD_BUILD" >> $GITHUB_OUTPUT
+        echo "sixteenkb_build=$SIXTEENKB_BUILD" >> $GITHUB_OUTPUT
+        
+        echo "Standard build: $STANDARD_BUILD"
+        echo "16KB build: $SIXTEENKB_BUILD"
+    
+    - name: Upload FFmpeg standard build
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.check_outputs.outputs.standard_build }}
+        path: ${{ steps.check_outputs.outputs.standard_build }}/
+        retention-days: 7
+      if: steps.check_outputs.outputs.standard_build != ''
+    
+    - name: Upload FFmpeg 16KB build
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.check_outputs.outputs.sixteenkb_build }}
+        path: ${{ steps.check_outputs.outputs.sixteenkb_build }}/
+        retention-days: 7
+      if: steps.check_outputs.outputs.sixteenkb_build != ''
+    
+    - name: Show build results
+      run: |
+        echo "Build completed successfully!"
+        ls -la ffmpeg-*/
+        find libs/ -name "*.so" -exec ls -la {} \;
