@@ -90,7 +90,7 @@ fi
 export NDK_TOOLCHAIN_DIR=$THIS_DIR/build_script/ndk-build-toolchain
 
 cd $THIS_DIR
-bash fix_ffmpeg.sh
+bash utils/fix_ffmpeg.sh
 
 echo "### build x264 start ###"
 

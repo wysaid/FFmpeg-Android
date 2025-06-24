@@ -2,7 +2,7 @@
 set -e
 set -x
 
-cd $(dirname $0)
+cd "$(dirname "$0")/.."
 
 if [[ -f ffmpeg/libavcodec/aaccoder.c ]]; then
     # Check if `#undef B0` already exists, if so, exit directly

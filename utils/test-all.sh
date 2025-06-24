@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-cd "$(dirname "$0")"
+set -e
+
+cd "$(dirname "$0")/.."
 
 ./cleanup.sh
 
@@ -22,3 +24,7 @@ git clean -ffdx build/ffmpeg
 ./build_android.sh --ffmpeg 5.0 --x264 31e19f92f00c7003fa115047ce50978bc98c3a0d
 # Build ffmpeg 5.0 + 16kb page size
 ./build_android.sh --ffmpeg 5.0 --x264 31e19f92f00c7003fa115047ce50978bc98c3a0d --16kb
+
+echo "All builds completed successfully."
+
+./utils/packages.sh

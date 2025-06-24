@@ -12,7 +12,7 @@ if [[ ! -f "${READ_ELF}" ]]; then
     exit 1
 fi
 
-cd $(dirname "$0")
+cd "$(dirname "$0")/.."
 
 find libs -type f -name "*.so" | while read -r file; do
     if [[ -f "$file" ]]; then
