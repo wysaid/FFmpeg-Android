@@ -27,4 +27,4 @@ git clean -ffdx build/ffmpeg
 
 echo "All builds completed successfully."
 
-./utils/packages.sh
+./utils/package.sh
